@@ -1,0 +1,9 @@
+.logo {
+  @include flexDisplay(row, center, center);
+  height: 100px;
+  width: 300px;
+  
+  h1 {
+    font-style: $logo-font;
+  }
+}

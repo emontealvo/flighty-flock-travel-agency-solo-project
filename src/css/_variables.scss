@@ -1,0 +1,13 @@
+//Variable
+$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+$logo-font: 'Josefin Sans', sans-serif;
+
+
+//Mix In
+@mixin flexDisplay($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
