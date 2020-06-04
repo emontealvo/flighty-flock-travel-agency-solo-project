@@ -1,6 +1,8 @@
 import chai from 'chai';
 const expect = chai.expect;
 import User from '../src/main/user'
+import destinations from '../test-data/destinations'
+import trips from '../test-data/trips'
 
 describe('User Class', () => {
 
@@ -38,4 +40,12 @@ describe('User Class', () => {
   it('should default to an empty array if no trips are given', () => {
     expect(user.trips).to.deep.equal([]);
   });
+
+  it('should have a reference to all possible destinations', function() {
+    expect(user).to.have.property('destinationKey')
+  })
+
+  it('should have an empty array if no destination key is given', () => {
+    expect(user.destinationKey).to.equal([])
+  })
 });
