@@ -11,23 +11,35 @@ import './main/apiFetch'
 import ApiFetch from './main/apiFetch';
 import DomUpdates from './main/domUpdates'
 
-console.log('This is the JavaScript entry file - your code begins here.');
-
-
-
 const querySelectors = {
   loginBtn: document.querySelector('.login-popup-btn'),
+  logoutBtn: document.querySelector('.logout-btn'),
   loginForm: document.querySelector('.login-form'),
   welcomePage: document.querySelector('.welcome-page'),
-  userPage: document.querySelector('.user-page'),
-  agencyPage: document.querySelector('.agency-page')
+  travelerPage: document.querySelector('.traveler-page'),
+  agencyPage: document.querySelector('.agency-page'),
 }
 
-const apiData = new ApiFetch() 
-const domUpdates = new DomUpdates(querySelectors);
+const getData = () => {
+  let apiData = new ApiFetch(); 
+  let travelerData = apiData.getTravelerData();
+  let destinationData = apiData.getDestinationData();
+  
+  Promise.all([travelerData, destinationData])
+    .then(response => response = {
+      travelers: response[0],
+      destinations: response[1]
+    })
+    .then(response => {
+      const domUpdates = new DomUpdates(querySelectors, response);
+      console.log(domUpdates)
+      domUpdates.declareEventListeners();
+    })  
+}
 
+getData();
 
-console.log(apiData.getTravelerData())
-domUpdates.declareEventListeners();
+// console.log(domUpdates)
+// domUpdates.declareEventListeners();
 
 // querySelectors.loginBtn.addEventListener('click', () => console.log('hello'));
