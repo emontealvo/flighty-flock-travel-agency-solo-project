@@ -34,10 +34,12 @@ const getData = () => {
       const domUpdates = new DomUpdates(querySelectors, response);
       console.log(domUpdates)
       domUpdates.declareEventListeners();
+      domUpdates.checkLocalStorage4User();
     })  
 }
 
 getData();
+
 
 // console.log(domUpdates)
 // domUpdates.declareEventListeners();

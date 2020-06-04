@@ -14,10 +14,10 @@ class DomUpdates {
     event.preventDefault()
     let username = document.forms[0].elements[0].value;
     let password = document.forms[0].elements[1].value
-    this.checkUserType(username, password);
+    this.checkUserInput(username, password);
   };
 
-  checkUserType(username, password) {
+  checkUserInput(username, password) {
     let regEx = /[^a-z]*/g;
     let userType = username.split(regEx).join('');
     let passWordCheck = (password === "travel2020");
@@ -36,7 +36,7 @@ class DomUpdates {
 
   startAgencyUx() {
     this.toggleUserInterface("agencyPage");
-    this.saveUser();
+    this.saveUser('agency');
   };
 
   findUser(username) {
@@ -67,7 +67,11 @@ class DomUpdates {
 
   checkLocalStorage4User() {
     if(localStorage.user) {
-      console.log('a step forward')
+      let previousUser = JSON.parse(localStorage.getItem('user'))
+      console.log(previousUser)
+      this.user = previousUser.info
+      return (previousUser.type === 'traveler') ? this.toggleUserInterface("travelerPage")
+        : this.toggleUserInterface("agencyPage");
     }
   }
 };
