@@ -16,7 +16,8 @@ console.log('This is the JavaScript entry file - your code begins here.');
 
 
 const querySelectors = {
-  loginBtn: document.getElementById('login')
+  loginBtn: document.querySelector('.login-popup'),
+  
 }
 
 const apiData = new ApiFetch() 
