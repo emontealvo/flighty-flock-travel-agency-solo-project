@@ -1,0 +1,11 @@
+.login-form {
+
+  form{
+    @include flexDisplay(column, space-around, center);
+    background-color: cornflowerblue;
+    width: 233px;
+    height: 144px;
+    float: right;
+    position: relative;
+  }
+}

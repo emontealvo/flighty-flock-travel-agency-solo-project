@@ -31,13 +31,13 @@ describe.skip('Api fetch behvior', function() {
 
   beforeEach(function() {
     
-    global.window = {}; 
-    chai.spy.on(window, 'fetch', () => {});
+    global.document = {}; 
+    chai.spy.on(document, 'fetch', () => {});
   });
 
   it('should be able to fetch traveler Data', function() {
 
     let apiFetch = new ApiFetch();
-    expect(apiFetch.getTravelerData()).to.call(window.fetch())
+    expect(apiFetch.getTravelerData()).to.call(fetch)
   });
 });
