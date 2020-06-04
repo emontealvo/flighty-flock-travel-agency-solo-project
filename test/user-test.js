@@ -42,10 +42,60 @@ describe('User Class', () => {
   });
 
   it('should have a reference to all possible destinations', function() {
-    expect(user).to.have.property('destinationKey')
-  })
+    expect(user).to.have.property('destinationKey');
+  });
 
   it('should have an empty array if no destination key is given', () => {
-    expect(user.destinationKey).to.equal([])
+    expect(user.destinationKey).to.deep.equal([]);
+  });
+});
+
+describe('User Class behavior', () => {
+
+  let user
+  beforeEach(() => {
+    user = new User('agency', trips, destinations);    
+  });
+
+  it('should hold trips in an array', () => {
+    expect(user.trips).to.be.an('array');
+  });
+
+  it('should be an empty array if trips given is not an array', () => {
+    let trips = {}
+    user = new User('agency', trips, destinations)
+    expect(user.trips).to.deep.equal([]);
+  });
+
+  it('should hold destinations in an array', () => {
+    expect(user.trips).to.be.an('array');
+  });
+
+  it('should be an empty array if trips given is not an array', () => {
+    let destinations = {}
+    user = new User('agency', trips, destinations)
+    expect(user.destinationKey).to.deep.equal([]);
+  });
+
+  it('should be able to calculate total trip cost', () => {
+    expect(user.calculateCost4AllTrips).to.be.a('function')
+  });
+
+  it('should calculate total trip cost correctly', () => {
+    expect(user.calculateCost4AllTrips()).to.equal(61780);
+  });
+
+  it('should calculate cost for single trip', () => {
+    expect(user.calculateTripCost).to.be.a('function');
+  });
+
+  it('should calculate the cost of a single trip', () => {
+    let trip = trips[0]
+    expect(user.calculateTripCost(trip)).to.equal(5290);
+  });
+
+  it('should calculate the cost of any single trip', () => {
+    let trip = trips[1]
+    expect(user.calculateTripCost(trip)).to.equal(4150);
   })
 });
