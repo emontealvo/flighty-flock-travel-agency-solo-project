@@ -5,6 +5,7 @@ import User from '../src/main/user'
 describe('User Class', () => {
 
   let user;
+
   beforeEach(() => {
     user = new User();
   });
@@ -18,7 +19,7 @@ describe('User Class', () => {
   });
 
   it('should have a type', () => {
-    expect('type').to.be.a.property.of(user);
+    expect(user).to.have.property('type');
   });
 
   it('should default to a guest user type', () => {
@@ -31,7 +32,7 @@ describe('User Class', () => {
   });
 
   it('should hold onto trips', () => {
-    expect('trips').to.be.a.property.of(user);
+    expect(user).to.have.property('trips');;
   });
 
   it('should default to an empty array if no trips are given', () => {
