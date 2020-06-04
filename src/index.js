@@ -16,8 +16,11 @@ console.log('This is the JavaScript entry file - your code begins here.');
 
 
 const querySelectors = {
-  loginBtn: document.querySelector('.login-popup'),
-  
+  loginBtn: document.querySelector('.login-popup-btn'),
+  loginForm: document.querySelector('.login-form'),
+  welcomePage: document.querySelector('.welcome-page'),
+  userPage: document.querySelector('.user-page'),
+  agencyPage: document.querySelector('.agency-page')
 }
 
 const apiData = new ApiFetch() 

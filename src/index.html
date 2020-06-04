@@ -19,23 +19,21 @@
           </ul>
         </nav>
         <div>
-          <button class="login-popup">Login!</button>
+          <button class="login-popup-btn">Login!</button>
 
           <button class="hidden">Logout</button>
         </div>
       </section>
     </header>
-    <article class="login-form hidden">
-      <form>
-        <label>Username:</label>
-        <input type="text" />
-        <label>Password:</label>
-        <input type="password" />
+      <form method="get" class="login-form hidden">
+        <label for="username">Username:</label>
+        <input type="text" id="username"/>
+        <label for="password">Password:</label>
+        <input type="password" id="password"/>
         <button type="submit">Submit</button>
       </form>
-    </article>
     <main>
-      <section class="main-page">
+      <section class="welcome-page">
         <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
       </section>
       <section class="user-page hidden">
