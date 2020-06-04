@@ -12,13 +12,14 @@ class DomUpdates {
     event.preventDefault()
     let regEx = /[a-z]*/
     let username = document.forms[0].elements[0].value;
-    
-    this.checkUserType(username.match(regEx)[0]);
+    let password = document.forms[0].elements[1].value
+    this.checkUserType(username.match(regEx)[0], password);
   };
 
-  checkUserType(userType) {
-    return (userType === 'traveler') ? this.startTravelerUx()
-    : (userType === 'agency') ? this.startAgencyUx()
+  checkUserType(userType, password) {
+    let passWordCheck = (password === "travel2020");
+    return (userType === 'traveler' && passWordCheck) ? this.startTravelerUx()
+    : (userType === 'agency' && passWordCheck) ? this.startAgencyUx()
     : alert('Invalid Username');
   };
 
