@@ -28,7 +28,17 @@ describe('Traveler subclass', () => {
     expect(traveler).to.be.an.instanceof(User);
   });
 
-  it('should return an error when no traveler information is given', () => {
-
+  it('should have a default type of "Traveler"', () => {
+    expect(traveler.type).to.equal('Traveler');
   });
+
+  it('should default to an empty array if no trips are given', () => {
+    expect(travelr.trips).to.deep.equal([]);
+  });
+
+  it('should default to an empty array if no destination key is given', () => {
+    expect(traveler.destinationKey).to.deep.equal([]);
+  });
+
+  
 });
