@@ -5,7 +5,9 @@ class ApiFetch {
 
   getTravelerData() {
     let url = `${this.rootUrl}/travelers/travelers`
-    return fetch(url).then(response => response.json());
+    return fetch(url)
+      .then(response => response.json())
+      .then(response => response.travelers);
   }
 
   getTripData() {
@@ -14,8 +16,10 @@ class ApiFetch {
   }
 
   getDestinationData() {
-    let url = `${this.rootUrl}/destinations/destionations`
-    return fetch(url).then(response => response.json());
+    let url = `${this.rootUrl}/destinations/destinations`
+    return fetch(url)
+      .then(response => response.json())
+      .then(response => response.destinations);
   }
 }
 
