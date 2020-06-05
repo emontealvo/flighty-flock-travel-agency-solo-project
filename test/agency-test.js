@@ -44,7 +44,7 @@ describe("Agency behavior", () => {
   });
 
   it('should be able to find all pending trips', () => {
-    expect(agency.findPendingTrips()).to.deep.equal([trips[1], trips[22], trips[7]]);
+    expect(agency.findPendingTrips()).to.deep.equal([trips[1], trips[2], trips[7]]);
   });
 
   it('should be able to find all ongoing trips for a date', () => {

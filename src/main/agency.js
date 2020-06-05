@@ -9,6 +9,11 @@ class Agency extends User {
     return (!year.match(/\d{4}/)) ? 'Invalid Input'
       : Math.floor(this.calculateTripCost4Yr(year) * .1)
   };
+
+  findPendingTrips() {
+    return this.trips
+      .filter(trip => trip.status === "pending");
+  };
 };
 
 export default Agency; 
