@@ -97,5 +97,5 @@ describe('User Class behavior', () => {
   it('should calculate the cost of any single trip', () => {
     let trip = trips[1]
     expect(user.calculateTripCost(trip)).to.equal(4150);
-  })
+  });
 });
