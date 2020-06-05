@@ -1,10 +1,11 @@
 import chai from 'chai';
 const expect = chai.expect;
 
-import Traveler from '../src/main/traveler'
-import User from '../src/main/user'
-import destinations from '../test-data/destinations'
-import trips from '../test-data/trips'
+import Traveler from '../src/main/traveler';
+import User from '../src/main/user';
+import destinations from '../test-data/destinations';
+import trips from '../test-data/trips';
+import travelerInfo from '../test-data/travelers';
 
 describe('Traveler as subclass of User', () => {
   let traveler;
@@ -87,14 +88,25 @@ describe('Traveler additional properties and behavior', () => {
   });
 
   it('should filter all of a user\'s trips from the trips data', () => {
-    traveler = new Traveler(trips, destinations, travelerInfo)
-    
+    traveler = new Traveler(trips, destinations, travelerInfo[1])
+
     expect(traveler.trips).to.deep.equal([trips[2], trips[3]]);
   });
 
   it('should be able to calculate total amount of money spent on a trip', function() {
-    expect(traveler.calculateTripCost(trip[8])).to.equal(4004);
+    expect(traveler.calculateTripCost(trips[8])).to.equal(4004);
   });
 
+  it('should be able to calculate total amount of money spent on a trips for a year', () => {
+    traveler = new Traveler(trips, destinations, travelerInfo[1])
 
-})
+    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(7139);
+  });
+
+  it('should be able to calculate total yearly trip cost for multiple years', () => {
+    traveler = new Traveler(trips, destinations, travelerInfo[2])
+
+    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(5335);
+    expect(traveler.calculateTravelExpenses4yr('2019')).to.deep.equal(5819);
+  });
+});

@@ -71,7 +71,7 @@ let trips =  [
   },
   {
   id: 8,
-  userID: 36,
+  userID: 35,
   destinationID: 39,
   travelers: 6,
   date: "2021/02/07",
