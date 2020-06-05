@@ -39,15 +39,7 @@ describe("Agency behavior", () => {
     agency = new Agency(trips, destinations);
   });
 
-  it('should calculate the agency\'s income from a single trip', () => {
-    expect(agency.calculateSingleTripIncome(trips[8])).to.equal(364);
-  });
-
-  it('should calculate the agency\'s income form other single trips', () => {
-    expect(agency.calculateSingleTripIncome(trips[1])).to.equal(415);
-  });
-
   it('should calculate the agency\'s yearly income', () => {
-    expect(agency.calculateAgencyYearlyIncome(year)).to.equal();  
+    expect(agency.calculateAgencyYearlyIncome('2019')).to.equal(893);  
   });
 });
