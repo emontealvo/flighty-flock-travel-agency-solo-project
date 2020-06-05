@@ -58,13 +58,7 @@ describe('Traveler additional properties and behavior', () => {
   let traveler;
 
   beforeEach(() => {
-    let travelerInfo = {
-      id: 25,
-      name: "Leighton Doerrling",
-      travelerType: "relaxer"
-      }; 
-    
-    traveler = new Traveler(trips, destinations, travelerInfo)
+    traveler = new Traveler(trips, destinations, travelerInfo[0])
   });
 
   it('should have a traveler id', () => {
@@ -89,30 +83,18 @@ describe('Traveler additional properties and behavior', () => {
   });
 
   it('should filter a user\'s trips from the trips data', () => {
-    let userTrip =   {
-      "id": 9,
-      "userID": 25,
-      "destinationID": 19,
-      "travelers": 5,
-      "date": "2019/12/19",
-      "duration": 19,
-      "status": "approved",
-      "suggestedActivities": []
-      }
-
-    expect(traveler.trips).to.deep.equal([userTrip]);
+    expect(traveler.trips).to.deep.equal([trips[8]]);
   });
 
   it('should filter all of a user\'s trips from the trips data', () => {
-    let travelerInfo = {
-      id: 43,
-      name: "Barron McDuffy",
-      travelerType: "Hardcore Relaxer"
-      }; 
-    
     traveler = new Traveler(trips, destinations, travelerInfo)
-
+    
     expect(traveler.trips).to.deep.equal([trips[2], trips[3]]);
   });
+
+  it('should be able to calculate total amount of money spent on a trip', function() {
+    expect(traveler.calculateTripCost(trip[8])).to.equal(4004);
+  });
+
 
 })
