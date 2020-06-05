@@ -94,7 +94,7 @@ describe('Traveler additional properties and behavior', () => {
   });
 
   it('should be able to calculate total amount of money spent on a trip', function() {
-    expect(traveler.calculateTripCost(trips[8])).to.equal(4004);
+    expect(traveler.calculateTripCost4Traveler(trips[8])).to.equal(4004);
   });
 
   it('should be able to calculate total amount of money spent on a trips for a year', () => {
@@ -106,7 +106,13 @@ describe('Traveler additional properties and behavior', () => {
   it('should be able to calculate total yearly trip cost for multiple years', () => {
     traveler = new Traveler(trips, destinations, travelerInfo[2])
 
-    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(5335);
+    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(4565);
     expect(traveler.calculateTravelExpenses4yr('2019')).to.deep.equal(5819);
+  });
+
+  it('should return a message if parameter is not given in "YYYY" format', () => {
+    traveler = new Traveler(trips, destinations, travelerInfo[1])
+
+    expect(traveler.calculateTravelExpenses4yr('twenty-twenty')).to.deep.equal("Invalid Input");
   });
 });
