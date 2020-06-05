@@ -17,12 +17,8 @@ class Traveler extends User {
   };
 
   calculateTravelExpenses4yr(year) {
-    if(!year.match(/\d{4}/)) return 'Invalid Input';
-
-    return this.trips
-      .filter(trip => trip.date.includes(year.match(/\d{4}/)))
-      .reduce((sumCost, trip) => 
-        sumCost += this.calculateTripCost4Traveler(trip), 0);
+    return (!year.match(/\d{4}/)) ? 'Invalid Input'
+      : Math.floor(this.calculateTripCost4Yr(year) * 1.1)
   };
 };
 

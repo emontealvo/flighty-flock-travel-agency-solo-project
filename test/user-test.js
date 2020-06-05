@@ -98,4 +98,14 @@ describe('User Class behavior', () => {
     let trip = trips[1]
     expect(user.calculateTripCost(trip)).to.equal(4150);
   });
+
+  it('should calculate the cost for all trips in a given year', () => {
+    expect(user.calculateTripCost4Yr('2019')).to.equal(8930);
+  });
+
+  it('should return a message if parameter is not given in "YYYY" format', () => {
+    user = new User('Agency', trips, destinations)
+
+    expect(user.calculateTripCost4Yr('twenty-twenty')).to.deep.equal("Invalid Input");
+  });
 });
