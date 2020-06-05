@@ -42,4 +42,12 @@ describe("Agency behavior", () => {
   it('should calculate the agency\'s yearly income', () => {
     expect(agency.calculateAgencyYearlyIncome('2019')).to.equal(893);  
   });
+
+  it('should be able to find all pending trips', () => {
+    expect(agency.findPendingTrips()).to.deep.equal([trips[1], trips[22], trips[7]]);
+  });
+
+  it('should be able to find all ongoing trips for a date', () => {
+    expect(agency.findOngoingTrips('2020/06/5')).to.deep.equal([trips[2], trips[6]]);
+  });
 });
