@@ -1,6 +1,10 @@
 //Variable
-$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-$logo-font: 'Josefin Sans', sans-serif;
+$dark-brown: #382119;
+$tan: #CCBE9F;
+$off-white: #E0DCD3;
+$light-teal: #ABC3C9;
+// $primary-background: radial-gradient(circle, $dark-brown 0%, $tan 100%);
+
 
 
 //Mix In
@@ -9,5 +13,26 @@ $logo-font: 'Josefin Sans', sans-serif;
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align;
+};
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+    
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+    
+  > img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+  }
 }
 

@@ -68,11 +68,65 @@ class DomUpdates {
   checkLocalStorage4User() {
     if(localStorage.user) {
       let previousUser = JSON.parse(localStorage.getItem('user'))
-      console.log(previousUser)
       this.user = previousUser.info
       return (previousUser.type === 'traveler') ? this.toggleUserInterface("travelerPage")
         : this.toggleUserInterface("agencyPage");
-    }
+    };
+  };
+
+  createDestinationCarousel() {
+    let container = document.createElement("article");
+    container.className = "carousel-container";
+    let carousel = document.createElement("div");
+    carousel.className = "carousel";
+    this.user.trips.forEach((trip, index) => {
+      this.createThumbnailHelperInput(carousel, index)
+    })
+    this.createAllDestinationSlides(carousel);
+    this.createAllDestinationThumbnails(carousel)
+  }
+
+  createThumbnailHelperInput(element, index) {
+    let thumbnailInput = `<input type="radio" name="slides" id="slide-${index + 1}>`
+    element.append(thumbnailInput);
+  }
+
+  createAllDestinationSlides(element) {
+    let carouselSlides = document.createElement("ul")
+    carouselSlides.className = "carousel-slides"
+    this.user.trips.forEach(trip => this.createDestinationCarouselSlide(carouselSlides, trip))
+    element.append(carouselSlides)
+  }
+
+  createDestinationCarouselSlide(element, destination) {
+    let slide = document.createElement("li")
+    slide.className = "carousel__slide"
+    let destinationInfo = 
+      `<figure>
+        <div>
+          <img src=${destination.image} alt=${destination.alt}>
+        </div>
+        <figcaption>
+          ${destination.alt}
+          <span class="location">${destination.destination}</span>
+        </figcaption>
+      </figure>`
+    element.append(slide.append(destinationInfo));
+  }
+
+  createAllDestinationThumbnails(element) {
+    let carouselThumbnails = document.createElement("ul")
+    carouselThumbnails.className = "carousel-thumbnails"
+    this.user.trips.forEach(trip => this.createDestinationThumbnail(carouselSlides, trip))
+    element.append(carouselThumbnails)
+  }
+
+  createDestinationThumbnail(element, destination) {
+    let thumbnail = document.createElement("li");
+    let thumbnailLabel = document.createElement('label')
+      .setAttribute("for", `slide-${index + 1}`);
+    let thumbnailImg = `<img src=${destination.img} alt=${destination.alt}`
+    element.append(thumbnail.append(thumbnailLabel.append(thumbnailImg)));
   }
 };
 
