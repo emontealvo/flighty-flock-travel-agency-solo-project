@@ -1,4 +1,6 @@
-import User from './user'
+import User from './user';
+const moment = require('moment');
+moment().format();
 
 class Agency extends User {
   constructor(trips, destinationKey) {
@@ -13,6 +15,25 @@ class Agency extends User {
   findPendingTrips() {
     return this.trips
       .filter(trip => trip.status === "pending");
+  };
+
+  getTripDates(trip) {
+    let dateSetUp = trip.date.split("/").map(strInteger => parseInt(strInteger));
+    let month = dateSetUp[1] -1;
+    let endDay = dateSetUp[2] + trip.duration;
+    return {
+      startDate: new Date(dateSetUp[0], month, dateSetUp[2]), 
+      endDate: new Date(dateSetUp[0], month, endDay)
+    }  
+  }
+
+  findOngoingTrips() {
+    return this.trips.filter(trip => {
+      let tripDates = this.getTripDates(trip)
+      let now = new Date()
+      return (tripDates.startDate.getTime() <= now.getTime() 
+        && now.getTime() <= tripDates.endDate.getTime());
+    })
   };
 };
 

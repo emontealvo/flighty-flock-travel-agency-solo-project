@@ -47,7 +47,16 @@ describe("Agency behavior", () => {
     expect(agency.findPendingTrips()).to.deep.equal([trips[1], trips[2], trips[7]]);
   });
 
-  it('should be able to find all ongoing trips for a date', () => {
-    expect(agency.findOngoingTrips('2020/06/5')).to.deep.equal([trips[2], trips[6]]);
+  it('should set up the start and end dates as arrays', () => {
+    let tripDates = agency.getTripDates(trips[0])
+    let result = {
+      startDate: new Date(2019, 8, 16), 
+      endDate: new Date(2019, 8, 24)
+    }
+    expect(tripDates).to.deep.equal(result);
   });
+
+  it('should find all ongoing trips', () => {
+    expect(agency.findOngoingTrips()).to.deep.equal([trips[2], trips[6]])
+  })
 });
