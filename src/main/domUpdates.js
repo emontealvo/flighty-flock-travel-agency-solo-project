@@ -79,29 +79,26 @@ class DomUpdates {
     container.className = "carousel-container";
     let carousel = document.createElement("div");
     carousel.className = "carousel";
-    this.user.trips.forEach((trip, index) => {
-      this.createThumbnailHelperInput(carousel, index)
-    })
+    this.user.trips.map((trip) => 
+      carousel.insertAdjacentHTML("afterbegin", `<input type="radio" name="slides" id="slide-${trip.id}/>`));
     this.createAllDestinationSlides(carousel);
     this.createAllDestinationThumbnails(carousel)
-  }
-
-  createThumbnailHelperInput(element, index) {
-    let thumbnailInput = `<input type="radio" name="slides" id="slide-${index + 1}>`
-    element.append(thumbnailInput);
+    console.log(container)
+    this.welcomePage.insertAdjacentHTML("afterbegin", container.appendChild(carousel));
   }
 
   createAllDestinationSlides(element) {
     let carouselSlides = document.createElement("ul")
-    carouselSlides.className = "carousel-slides"
+    carouselSlides.className = "carousel__slides"
+    console.log(this.user.trips)
     this.user.trips.forEach(trip => this.createDestinationCarouselSlide(carouselSlides, trip))
-    element.append(carouselSlides)
+    element.appendChild(carouselSlides)
   }
 
   createDestinationCarouselSlide(element, destination) {
     let slide = document.createElement("li")
     slide.className = "carousel__slide"
-    let destinationInfo = 
+    slide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
           <img src=${destination.image} alt=${destination.alt}>
@@ -111,20 +108,21 @@ class DomUpdates {
           <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
-    element.append(slide.append(destinationInfo));
+    )
+    element.append(slide);
   }
 
   createAllDestinationThumbnails(element) {
     let carouselThumbnails = document.createElement("ul")
-    carouselThumbnails.className = "carousel-thumbnails"
-    this.user.trips.forEach(trip => this.createDestinationThumbnail(carouselSlides, trip))
+    carouselThumbnails.className = "carousel__thumbnails"
+    this.user.trips.forEach((trip, index) => this.createDestinationThumbnail(carouselThumbnails, trip, index))
     element.append(carouselThumbnails)
   }
 
-  createDestinationThumbnail(element, destination) {
+  createDestinationThumbnail(element, destination, index) {
     let thumbnail = document.createElement("li");
-    let thumbnailLabel = document.createElement('label')
-      .setAttribute("for", `slide-${index + 1}`);
+    let thumbnailLabel = document.createElement("label")
+    thumbnailLabel.setAttribute("for", `slide-${index + 1}`);
     let thumbnailImg = `<img src=${destination.img} alt=${destination.alt}`
     element.append(thumbnail.append(thumbnailLabel.append(thumbnailImg)));
   }
