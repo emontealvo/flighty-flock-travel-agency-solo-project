@@ -10,6 +10,7 @@ import './images/turing-logo.png'
 import './main/apiFetch'
 import ApiFetch from './main/apiFetch';
 import DomUpdates from './main/domUpdates'
+import User from './main/user'
 
 const querySelectors = {
   loginBtn: document.querySelector('.login-popup-btn'),
@@ -24,17 +25,23 @@ const getData = () => {
   let apiData = new ApiFetch(); 
   let travelerData = apiData.getTravelerData();
   let destinationData = apiData.getDestinationData();
+  let tripData = apiData.getTripData();
+
   
-  Promise.all([travelerData, destinationData])
+  Promise.all([travelerData, destinationData, tripData])
     .then(response => response = {
       travelers: response[0],
-      destinations: response[1]
+      destinations: response[1],
+      trips: response[2]
     })
     .then(response => {
       const domUpdates = new DomUpdates(querySelectors, response);
+      const user = new User("Guest", response.trips, response.destinations);
+      domUpdates.user = user
       console.log(domUpdates)
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
+      domUpdates.createDestinationCarousel()
     })  
 }
 

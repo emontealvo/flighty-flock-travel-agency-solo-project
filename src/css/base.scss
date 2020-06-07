@@ -2,12 +2,13 @@
 @import 'variables';
 @import 'header';
 @import 'loginPopup';
-
+@import 'carousel';
 
 
 
 body {
-  background: $primary-background;
+  background: $dark-brown;
+  color: $off-white;
 }
 
 .hidden {
