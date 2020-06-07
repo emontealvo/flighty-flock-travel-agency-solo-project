@@ -3,7 +3,7 @@ import User from './user'
 class Traveler extends User {
   constructor(trips, destinationKey, travelerInfo) {
     super('Traveler', trips, destinationKey);
-    
+
     if(typeof travelerInfo === 'object') {
       this.id = travelerInfo.id || NaN;
       this.name = travelerInfo.name || '';
@@ -13,7 +13,7 @@ class Traveler extends User {
   };
 
   calculateTripCost4Traveler(trip) {
-    return Math.floor(this.calculateTripCost(trip) * 1.1);
+		return Math.floor(this.calculateTripCost(trip) * 1.1);
   };
 
   calculateTravelExpenses4yr(year) {
