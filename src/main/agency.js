@@ -3,6 +3,7 @@ import User from './user';
 class Agency extends User {
   constructor(trips, destinationKey) {
     super('agency', trips, destinationKey);
+    this.pendingTrips = this.findPendingTrips();
   }
 
   calculateAgencyYearlyIncome(year) {
@@ -12,7 +13,9 @@ class Agency extends User {
   
   findPendingTrips() {
     return this.trips
-      .filter(trip => trip.status === "pending");
+      .filter(trip => trip.status === "pending")
+      .sort((a, b) => 
+        this.getTripDates(a).startDate < this.getTripDates(b).startDate ? -1 : 1)
   }
 
   getTripDates(trip) {

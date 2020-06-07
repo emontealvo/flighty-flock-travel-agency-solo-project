@@ -87,9 +87,9 @@ class DomUpdates {
       this.user = new Traveler(this.trips, this.destinations, userInfo);
       this.toggleUserInterface("travelerPage")
     } else if (previousUser.type === 'agency') {
-      console.log(this.user)
+      this.user = new Agency (this.trips, this.destinations);
+      this.toggleUserInterface("agencyPage");
     }
-    // : this.toggleUserInterface("agencyPage");
   }
   
 
@@ -98,8 +98,13 @@ class DomUpdates {
       this.createDestinationCatalog(this.welcomePage, this.destinations);
     } else if (this.user.type === "Traveler") {
       let destinations = this.user.trips
-        .map(trip => this.user.findDestinationDetails(trip))
+        .map(trip => this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.travelerPage, destinations);
+    } else if (this.user.type === "agency") {
+      console.log(this.user.pendingTrips);
+      let destinations = this.user.pendingTrips
+        .map(trip =>  this.user.findDestinationDetails(trip));
+      this.createDestinationCatalog(this.agencyPage, destinations)
     }
   }
 
