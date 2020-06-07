@@ -9,9 +9,14 @@ class User {
     return this.trips.reduce((acc, trip) => acc += this.calculateTripCost(trip), 0)
   }
 
+  findDestinationDetails(trip) {
+    let destination = this.destinationKey
+      .find(destination => trip.destinationID === destination.id);
+    return destination;
+  }
 	
   calculateTripCost(trip) {
-    let destination = this.destinationKey.find(destination => trip.destinationID === destination.id);
+    let destination = this.findDestinationDetails(trip)
     let lodgingCost = destination.estimatedLodgingCostPerDay * trip.duration;
     let flightCost = destination.estimatedFlightCostPerPerson * trip.travelers;
 

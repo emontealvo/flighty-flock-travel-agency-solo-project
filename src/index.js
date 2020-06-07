@@ -40,7 +40,7 @@ const getData = () => {
       console.log(domUpdates);
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
-      domUpdates.createDestinationCatalog();
+      domUpdates.createMainDisplay();
     })  
 }
 
