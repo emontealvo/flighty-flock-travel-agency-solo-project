@@ -16,6 +16,14 @@
 
     return lodgingCost + flightCost;
    };
- };
 
+  calculateTripCost4Yr(year) {
+    if(!year.match(/\d{4}/)) return 'Invalid Input';
+
+    return this.trips
+      .filter(trip => trip.date.includes(year.match(/\d{4}/)))
+      .reduce((sumCost, trip) => 
+        sumCost += this.calculateTripCost(trip), 0);
+  };
+};
  export default User;
