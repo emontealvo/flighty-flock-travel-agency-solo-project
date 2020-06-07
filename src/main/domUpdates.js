@@ -82,24 +82,21 @@ class DomUpdates {
     }
   }
 
-  createDestinationCarousel(user) {
-    let container = document.createElement("article");
-    container.className = "carousel-container";
-    let carousel = document.createElement("div");
-    carousel.className = "carousel";
-    this.destinations.map((trip) => 
-      carousel.insertAdjacentHTML("afterbegin", `<input type="radio" name="slides" id="slide-${trip.id}/>`));
-    this.createAllDestinationSlides(carousel);
-    this.createAllDestinationThumbnails(carousel);
-    this.welcomePage.appendChild(container.appendChild(carousel));
+  createDestinationCatalog(element, destinations) {
+    let catalog = document.createElement("div");
+    catalog.className = "catalog";
+    this.createAllDestinationSlides(catalog);
+    this.createAllDestinationThumbnails(catalog);
+    console.log(this.user);
+    this.destinationsCatalog.appendChild(catalog);
   }
 
   createAllDestinationSlides(element) {
-    let carouselSlides = document.createElement("ul")
-    carouselSlides.className = "carousel__slides"
+    let catalogEntry = document.createElement("ul")
+    catalogEntry.className = "destination-entry"
     this.destinations.forEach(destination => 
-      this.createDestinationCarouselSlide(carouselSlides, destination))
-    element.appendChild(carouselSlides)
+      this.createDestinationCarouselSlide(catalogEntry, destination))
+    element.appendChild(catalogEntry)
   }
 
   createDestinationCarouselSlide(element, destination) {

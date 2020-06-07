@@ -18,7 +18,8 @@ const querySelectors = {
   welcomePage: document.querySelector('.welcome-page'),
   travelerPage: document.querySelector('.traveler-page'),
   agencyPage: document.querySelector('.agency-page'),
-
+  destinationsCatalog: document.querySelector('.destinations-catalog'),
+  travelerTrips: document.querySelector('.traveler-trips')
 }
 
 const getData = () => {
@@ -36,10 +37,10 @@ const getData = () => {
     })
     .then(response => {
       const domUpdates = new DomUpdates(response, querySelectors);
+      console.log(domUpdates);
       domUpdates.declareEventListeners();
-      console.log(domUpdates.user);
       domUpdates.checkLocalStorage4User();
-      //domUpdates.createDestinationCarousel(user)
+      domUpdates.createDestinationCatalog();
     })  
 }
 
