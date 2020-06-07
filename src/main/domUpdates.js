@@ -117,11 +117,12 @@ class DomUpdates {
   }
 
   createAllDestinationSlides(element, destinations) {
-    let catalogEntry = document.createElement("ul")
-    catalogEntry.className = "destination-entry"
+    let catalogList = document.createElement("ul")
+    catalogList.className = "destination-list"
     destinations.forEach(destination => 
-      this.createDestinationSlide(catalogEntry, destination))
-    element.appendChild(catalogEntry)
+      this.createDestinationSlide(catalogList, destination))
+    element.appendChild(catalogList)
+    console.log(catalogList.children);
   }
 
   createDestinationSlide(element, destination) {
