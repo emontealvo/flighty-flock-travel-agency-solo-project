@@ -36,7 +36,20 @@
         <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
       </section>
       <section class="traveler-page hidden">
-        
+        <article class="trip-request">
+          <form method="post" class="trip-request-form">
+            <label for="start-date">Date:</label>
+            <input type="date" id="start-date" name="start-date" min="2017-12-31" max="2022-12-31">
+            <label for="desired-destination">Destination:</label>
+            <select name="destinations" id"desired-destination">
+              <option value="">Where to?</option>
+            </select>
+            <label for="traveler-amount">Travelers:</label>
+            <input type="number" id="traveler-amount" name="traveler-amount"> 
+            <label for="trip-duration">Days:</label>
+            <input type="number" id="trip-duration" name="trip-duration">
+          </form>
+        </article>        
       </section>
       <section class="agency-page hidden">
 
