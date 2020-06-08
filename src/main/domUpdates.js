@@ -105,7 +105,7 @@ class DomUpdates {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.travelerPage, destinations);
-      //this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
     } else if (this.user.type === "agency") {
       let destinations = this.user.pendingTrips
         .map(trip =>  this.user.findDestinationDetails(trip));
@@ -146,6 +146,22 @@ class DomUpdates {
     element.append(slide);
   }
 
+  createUserYear2DateFinanceMetric(userNode, financeMetric) {
+    let message = this.createFinanceMetricMessage(userNode, financeMetric)
+    userNode.innerHTML = ''
+    userNode.insertAdjacentHTML('afterbegin', 
+      `<h1>${message}</h1>`);
+  }
+
+  createFinanceMetricMessage(userNode, financeMetric) {
+    if (userNode.id === "traveler-Y2D-expenses") {
+      return `You've spent $${financeMetric} on trips this year!`	
+    } 
+
+    if (userNode.id === "agency-Y2D-income") {
+      return `We've generated $${financeMetric} from trips this year!`
+    }
+  }
   displayRequestForm() {
     this.tripRequestForm.classList.toggle('hidden');
     this.createDestinatonOptions();
