@@ -115,6 +115,7 @@ class DomUpdates {
   }
 
   createDestinationCatalog(element, destinations) {
+    element.innerHTML = '';
     let catalog = document.createElement("div");
     catalog.className = "catalog";
     this.createAllDestinationSlides(catalog, destinations);
@@ -138,13 +139,18 @@ class DomUpdates {
           <img src=${destination.image} alt=${destination.alt}>
         </div>
         <figcaption>
-          ${destination.alt}
+          ${this.createDestinationCaption(element)}
           <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
     )
     element.append(slide);
   }
+
+  createDestinationCaption(element) {
+	 console.log(element)
+  }
+
 
   createUserYear2DateFinanceMetric(userNode, financeMetric) {
     let message = this.createFinanceMetricMessage(userNode, financeMetric)
