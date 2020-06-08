@@ -21,7 +21,6 @@ class DomUpdates {
   }
 
   logUserIn() {
-    event.preventDefault()
     let username = document.forms[0].elements[0].value;
     let password = document.forms[0].elements[1].value
     this.checkUserInput(username, password);
@@ -48,7 +47,6 @@ class DomUpdates {
     this.user = new Agency (this.trips, this.destinations);
     this.toggleUserInterface("agencyPage");
     this.saveUser('agency');
-    console.log(this.user);
   }
 
   findUser(username) {
@@ -107,11 +105,12 @@ class DomUpdates {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.travelerPage, destinations);
+      //this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
     } else if (this.user.type === "agency") {
-      console.log(this.user.pendingTrips);
       let destinations = this.user.pendingTrips
         .map(trip =>  this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.agencyPage, destinations)
+      //this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1], this.user.calculateAgencyYearlyIncome('2020'))
     }
   }
 

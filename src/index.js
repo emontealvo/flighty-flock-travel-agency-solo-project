@@ -22,6 +22,7 @@ const querySelectors = {
   travelerTrips: document.querySelector('.traveler-trips'),
   tripRequestForm: document.forms.tripRequestForm,
   bookTripBtn: document.querySelector(".book-trip-btn"),
+  userFinanceMetricArticles: document.querySelectorAll(".finance-metric"),
 }
 
 const getData = () => {
@@ -42,6 +43,7 @@ const getData = () => {
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
       domUpdates.createMainDisplay();
+      console.log(domUpdates.userFinanceMetricArticles)
       return domUpdates
     })
     .then(response => console.log(response))
