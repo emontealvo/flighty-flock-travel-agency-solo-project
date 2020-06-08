@@ -38,26 +38,26 @@
 				</article>
       </section>
       <section class="traveler-page hidden">
+				<button class="book-trip-btn" type="button" form="trip-request-form">Book A Trip!</button>
 				<article class="finance-metric">
 					
 				</article>
 				<article class="traveler-trips">
 
 				</article>
-        <article class="trip-request hidden">
-          <form method="post" class="trip-request-form">
+          <form class="hidden" id="trip-request-form" name="tripRequestForm">
             <label for="start-date">Date:</label>
-            <input type="date" id="start-date" name="start-date" min="2017-12-31" max="2022-12-31">
+            <input type="date" id="start-date" name="startDate" min="2020-06-08" max="2022-12-31">
             <label for="desired-destination">Destination:</label>
-            <select name="destinations" id"desired-destination">
-              <option value="">Where to?</option>
+            <select name="destination" id="desired-destination">
+              <option value="None, yet :)">Where to?</option>
             </select>
             <label for="traveler-amount">Travelers:</label>
-            <input type="number" id="traveler-amount" name="traveler-amount"> 
+            <input type="number" id="traveler-amount" name="travelerAmount"> 
             <label for="trip-duration">Days:</label>
-            <input type="number" id="trip-duration" name="trip-duration">
+            <input type="number" id="trip-duration" name="tripDuration">
+						<button type="submit">Submit Request</button>
           </form>
-        </article>        
       </section>
       <section class="agency-page hidden">
 				<article class="finance-metric">

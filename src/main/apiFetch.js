@@ -1,42 +1,41 @@
 class ApiFetch {
   constructor() {
     this.rootUrl = "https://fe-apps.herokuapp.com/api/v1/travel-tracker/data"
-  };
+  }
 
   getTravelerData() {
     let url = `${this.rootUrl}/travelers/travelers`
     return fetch(url)
       .then(response => response.json())
       .then(response => response.travelers);
-  };
+  }
 
   getTripData() {
     let url = `${this.rootUrl}/trips/trips`
     return fetch(url).then(response => response.json())
-            .then(response => response.trips)
-  };
+      .then(response => response.trips)
+  }
 
   getDestinationData() {
     let url = `${this.rootUrl}/destinations/destinations`
     return fetch(url)
       .then(response => response.json())
       .then(response => response.destinations);
-  };
+  }
 
-  makeTripRequest() {
+  makeTripRequest(tripRequest) {
     let url = `${this.rootUrl}/trips/trips`;
-    return fetch(url, )
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(tripRequest),
+    })
+      .then(respone => respone.json())
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
   }
 }
-
-
-// 	{id: <number>, 
-//    userID: <number>, 
-//    destinationID: <number>,
-//    travelers: <number>,
-//     date: <string 'YYYY/MM/DD'>,
-//     duration: <number>,
-//      status: <string 'approved' or 'pending'>,
-//       suggestedActivities: <array of strings>}
 
 export default ApiFetch;

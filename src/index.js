@@ -19,7 +19,9 @@ const querySelectors = {
   travelerPage: document.querySelector('.traveler-page'),
   agencyPage: document.querySelector('.agency-page'),
   destinationsCatalog: document.querySelector('.destinations-catalog'),
-  travelerTrips: document.querySelector('.traveler-trips')
+  travelerTrips: document.querySelector('.traveler-trips'),
+  tripRequestForm: document.forms.tripRequestForm,
+  bookTripBtn: document.querySelector(".book-trip-btn"),
 }
 
 const getData = () => {
@@ -37,17 +39,14 @@ const getData = () => {
     })
     .then(response => {
       const domUpdates = new DomUpdates(response, querySelectors);
-      console.log(domUpdates);
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
       domUpdates.createMainDisplay();
-    })  
+      return domUpdates
+    })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
 }
 
 getData();
 
-
-// console.log(domUpdates)
-// domUpdates.declareEventListeners();
-
-// querySelectors.loginBtn.addEventListener('click', () => console.log('hello'));
