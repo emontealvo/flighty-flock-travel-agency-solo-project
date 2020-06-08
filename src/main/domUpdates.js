@@ -1,5 +1,6 @@
 import Agency from './agency'
 import Traveler from './traveler'
+import ApiFetch from './apiFetch'
 
 class DomUpdates {
   constructor(querySelectors, responseData) {
@@ -12,6 +13,11 @@ class DomUpdates {
       this.loginForm.classList.toggle('hidden'));
     this.logoutBtn.addEventListener('click', () => this.logUserOut());
     this.loginForm.addEventListener('submit', () => this.logUserIn());
+    this.bookTripBtn.addEventListener('click', () => this.displayRequestForm());
+    this.tripRequestForm.addEventListener('submit', () => {
+      event.preventDefault();
+      this.createTripRequest(this.tripRequestForm.children);
+    });
   }
 
   logUserIn() {
@@ -61,6 +67,7 @@ class DomUpdates {
     this.loginBtn.classList.add('hidden');
     this[userType].classList.remove('hidden');
     this.logoutBtn.classList.remove('hidden');
+    this.createMainDisplay();
   }
 
   logUserOut() {
@@ -95,7 +102,7 @@ class DomUpdates {
 
   createMainDisplay() {
     if (this.user.type === "Guest") {
-      this.createDestinationCatalog(this.welcomePage, this.destinations);
+      this.createDestinationCatalog(this.destinationsCatalog, this.destinations);
     } else if (this.user.type === "Traveler") {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
@@ -121,7 +128,6 @@ class DomUpdates {
     destinations.forEach(destination => 
       this.createDestinationSlide(catalogList, destination))
     element.appendChild(catalogList)
-    console.log(catalogList.children);
   }
 
   createDestinationSlide(element, destination) {
@@ -141,6 +147,45 @@ class DomUpdates {
     element.append(slide);
   }
 
+  displayRequestForm() {
+    this.tripRequestForm.classList.toggle('hidden');
+    this.createDestinatonOptions();
+  }
+
+  createDestinatonOptions() {
+    let options = document.getElementById("desired-destination")
+    this.destinations.forEach(destination => {
+      options.insertAdjacentHTML('beforeend',
+        `<option value=${destination.id}>${destination.destination}</option>`
+      )
+    });
+  }
+
+  createTripRequest(form) {
+    const createRequestId = () =>
+      parseInt(new Date().getTime().toString().slice(6));
+		
+    const reformatDate = () => form.startDate.value.split('-').join('/')
+
+    const tripRequest = {
+      id: createRequestId(),
+      userID: this.user.id,
+      destinationID: parseInt(form.destination.value),
+      travelers: parseInt(form.travelerAmount.value),
+      date: reformatDate(),
+      duration: parseInt(form.tripDuration.value), 
+      status: 'pending',
+      suggestedActivities: []
+    }
+
+    const apiRequest = new ApiFetch();
+		
+    apiRequest.makeTripRequest(tripRequest)
+      .then(response => console.log(response))
+      .catch(err => console.log(err));	
+  }
 }
 
 export default DomUpdates;
+
+
