@@ -22,7 +22,7 @@ describe('Agency as subclass of User', () => {
   });
 
   it('should have a default type of "Agency"', () => {
-    expect(agency.type).to.equal('Agency');
+    expect(agency.type).to.equal('agency');
   });
 
   it('should be an extension of the user class', () => {
@@ -44,7 +44,7 @@ describe("Agency behavior", () => {
   });
 
   it('should be able to find all pending trips', () => {
-    expect(agency.findPendingTrips()).to.deep.equal([trips[1], trips[2], trips[7]]);
+    expect(agency.findPendingTrips()).to.deep.equal([trips[2], trips[1], trips[7]]);
   });
 
   it('should set up the start and end dates as arrays', () => {
@@ -57,6 +57,6 @@ describe("Agency behavior", () => {
   });
 
   it('should find all ongoing trips', () => {
-    expect(agency.findOngoingTrips()).to.deep.equal([trips[2], trips[6]])
+    expect(agency.findOngoingTrips()).to.deep.equal([trips[2]])
   })
 });
