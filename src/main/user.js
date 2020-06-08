@@ -12,6 +12,7 @@ class User {
   findDestinationDetails(trip) {
     let destination = this.destinationKey
       .find(destination => trip.destinationID === destination.id);
+    destination.tripID = trip.id;
     return destination;
   }
 	
