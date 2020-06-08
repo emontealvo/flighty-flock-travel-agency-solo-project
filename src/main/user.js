@@ -3,15 +3,21 @@ class User {
     this.type = type || 'Guest';
     this.trips = (Array.isArray(trips)) ? trips : [];
     this.destinationKey = (Array.isArray(destinationKey)) ? destinationKey : [];
+    this.approvedTrips = this.trips.filter(trip => trip.status === "approved")
   }
 
   calculateCost4AllTrips() {
     return this.trips.reduce((acc, trip) => acc += this.calculateTripCost(trip), 0)
   }
 
+  findDestinationDetails(trip) {
+    let destination = this.destinationKey
+      .find(destination => trip.destinationID === destination.id);
+    return destination;
+  }
 	
   calculateTripCost(trip) {
-    let destination = this.destinationKey.find(destination => trip.destinationID === destination.id);
+    let destination = this.findDestinationDetails(trip)
     let lodgingCost = destination.estimatedLodgingCostPerDay * trip.duration;
     let flightCost = destination.estimatedFlightCostPerPerson * trip.travelers;
 
@@ -23,7 +29,7 @@ class User {
       return 'Invalid Input';
     }
 
-    return this.trips
+    return this.approvedTrips
       .filter(trip => trip.date.includes(year.match(/\d{4}/)))
       .reduce((sumCost, trip) => 
         sumCost += this.calculateTripCost(trip), 0);

@@ -3,7 +3,7 @@ import Traveler from './traveler'
 
 class DomUpdates {
   constructor(querySelectors, responseData) {
-    this.user = {};
+    this.user = {type: "Guest"};
     Object.assign(this, querySelectors, responseData);
   }
 
@@ -47,14 +47,13 @@ class DomUpdates {
 
   findUser(username) {
     let regEx = /[a-z]*/g
-    let userId = username.split(regEx).join('')
-    let travlerInfo = this.travelers.find(user => user.id == userId);
+    let userId = parseInt(username.split(regEx).join(''))
+    let travlerInfo = this.travelers.find(user => user.id === userId);
     this.user = new Traveler (this.trips, this.destinations, travlerInfo);
-    console.log(this.user)
   }
 
-  saveUser(userType) {
-    localStorage.setItem('user', JSON.stringify({type: userType, info: this.user}));
+  saveUser() {
+    localStorage.setItem('user', JSON.stringify(this.user));
   }
 
   toggleUserInterface(userType) {
@@ -74,32 +73,58 @@ class DomUpdates {
   }
 
   checkLocalStorage4User() {
-    if (localStorage.user) {
-      let previousUser = JSON.parse(localStorage.getItem('user'))
-      this.user = previousUser.info
-      return (previousUser.type === 'traveler') ? this.toggleUserInterface("travelerPage")
-        : this.toggleUserInterface("agencyPage");
+    if (!localStorage.user) {
+      return
+    } 
+
+    let previousUser = JSON.parse(localStorage.getItem('user'))
+    if (previousUser.type === 'Traveler') {
+      let userInfo = {
+        id: previousUser.id,
+        name: previousUser.name,
+        travelerType: previousUser.travelerType
+      };
+      this.user = new Traveler(this.trips, this.destinations, userInfo);
+      this.toggleUserInterface("travelerPage")
+    } else if (previousUser.type === 'agency') {
+      this.user = new Agency (this.trips, this.destinations);
+      this.toggleUserInterface("agencyPage");
+    }
+  }
+  
+
+  createMainDisplay() {
+    if (this.user.type === "Guest") {
+      this.createDestinationCatalog(this.welcomePage, this.destinations);
+    } else if (this.user.type === "Traveler") {
+      let destinations = this.user.trips
+        .map(trip => this.user.findDestinationDetails(trip));
+      this.createDestinationCatalog(this.travelerPage, destinations);
+    } else if (this.user.type === "agency") {
+      console.log(this.user.pendingTrips);
+      let destinations = this.user.pendingTrips
+        .map(trip =>  this.user.findDestinationDetails(trip));
+      this.createDestinationCatalog(this.agencyPage, destinations)
     }
   }
 
   createDestinationCatalog(element, destinations) {
     let catalog = document.createElement("div");
     catalog.className = "catalog";
-    this.createAllDestinationSlides(catalog);
-    this.createAllDestinationThumbnails(catalog);
-    console.log(this.user);
-    this.destinationsCatalog.appendChild(catalog);
+    this.createAllDestinationSlides(catalog, destinations);
+    element.appendChild(catalog);
   }
 
-  createAllDestinationSlides(element) {
-    let catalogEntry = document.createElement("ul")
-    catalogEntry.className = "destination-entry"
-    this.destinations.forEach(destination => 
-      this.createDestinationCarouselSlide(catalogEntry, destination))
-    element.appendChild(catalogEntry)
+  createAllDestinationSlides(element, destinations) {
+    let catalogList = document.createElement("ul")
+    catalogList.className = "destination-list"
+    destinations.forEach(destination => 
+      this.createDestinationSlide(catalogList, destination))
+    element.appendChild(catalogList)
+    console.log(catalogList.children);
   }
 
-  createDestinationCarouselSlide(element, destination) {
+  createDestinationSlide(element, destination) {
     let slide = document.createElement("li")
     slide.className = "carousel__slide"
     slide.insertAdjacentHTML('afterbegin', 
@@ -116,20 +141,6 @@ class DomUpdates {
     element.append(slide);
   }
 
-  createAllDestinationThumbnails(element) {
-    let carouselThumbnails = document.createElement("ul")
-    carouselThumbnails.className = "carousel__thumbnails"
-    this.destinations.forEach((destination, index) => this.createDestinationThumbnail(carouselThumbnails, destination, index))
-    element.append(carouselThumbnails)
-  }
-
-  createDestinationThumbnail(element, destination, index) {
-    let thumbnail = document.createElement("li");
-    let thumbnailLabel = document.createElement("label")
-    thumbnailLabel.setAttribute("for", `slide-${index + 1}`);
-    thumbnailLabel.innerHTML = `<img src=${destination.image} alt=${destination.alt}/>`;
-    element.append(thumbnail.appendChild(thumbnailLabel));
-  }
 }
 
 export default DomUpdates;
