@@ -3,6 +3,7 @@ import User from './user';
 class Agency extends User {
   constructor(trips, destinationKey) {
     super('agency', trips, destinationKey);
+    console.log("in constructor", this.trips.length)
     this.pendingTrips = this.findPendingTrips();
   }
 

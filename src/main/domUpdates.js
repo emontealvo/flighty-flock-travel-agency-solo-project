@@ -112,7 +112,6 @@ class DomUpdates {
     let catalog = document.createElement("div");
     catalog.className = "catalog";
     this.createAllDestinationSlides(catalog, destinations);
-    //    this.createAllDestinationThumbnails(catalog, destinations);
     element.appendChild(catalog);
   }
 
@@ -142,20 +141,6 @@ class DomUpdates {
     element.append(slide);
   }
 
-  // createAllDestinationThumbnails(element, destinations) {
-  // let carouselThumbnails = document.createElement("ul")
-  //carouselThumbnails.className = "carousel__thumbnails"
-  //destinations.forEach((destination, index) => this.createDestinationThumbnail(carouselThumbnails, destination, index))
-//    element.append(carouselThumbnails)
-//  }
-//
-//  createDestinationThumbnail(element, destination, index) {
-//    let thumbnail = document.createElement("li");
-//    let thumbnailLabel = document.createElement("label")
-//    thumbnailLabel.setAttribute("for", `slide-${index + 1}`);
-//    thumbnailLabel.innerHTML = `<img src=${destination.image} alt=${destination.alt}/>`;
-//    element.append(thumbnail.appendChild(thumbnailLabel));
-//  }
 }
 
 export default DomUpdates;

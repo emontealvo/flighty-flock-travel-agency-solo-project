@@ -3,6 +3,7 @@ class User {
     this.type = type || 'Guest';
     this.trips = (Array.isArray(trips)) ? trips : [];
     this.destinationKey = (Array.isArray(destinationKey)) ? destinationKey : [];
+    this.approvedTrips = this.trips.filter(trip => trip.status === "approved")
   }
 
   calculateCost4AllTrips() {
@@ -28,7 +29,7 @@ class User {
       return 'Invalid Input';
     }
 
-    return this.trips
+    return this.approvedTrips
       .filter(trip => trip.date.includes(year.match(/\d{4}/)))
       .reduce((sumCost, trip) => 
         sumCost += this.calculateTripCost(trip), 0);
