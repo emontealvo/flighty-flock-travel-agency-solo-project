@@ -17,11 +17,14 @@ const querySelectors = {
   loginForm: document.querySelector('.login-form'),
   welcomePage: document.querySelector('.welcome-page'),
   travelerPage: document.querySelector('.traveler-page'),
+  travelerTripHistory: document.querySelector('.traveler-trip-history'),
   agencyPage: document.querySelector('.agency-page'),
+  pendingUserTrips: document.querySelector('.pending-user-trips'),
   destinationsCatalog: document.querySelector('.destinations-catalog'),
   travelerTrips: document.querySelector('.traveler-trips'),
   tripRequestForm: document.forms.tripRequestForm,
   bookTripBtn: document.querySelector(".book-trip-btn"),
+  userFinanceMetricArticles: document.querySelectorAll(".finance-metric"),
 }
 
 const getData = () => {
@@ -42,6 +45,7 @@ const getData = () => {
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
       domUpdates.createMainDisplay();
+      console.log(domUpdates.userFinanceMetricArticles)
       return domUpdates
     })
     .then(response => console.log(response))
