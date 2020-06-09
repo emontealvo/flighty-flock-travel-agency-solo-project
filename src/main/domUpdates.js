@@ -136,8 +136,11 @@ class DomUpdates {
   }
 
   createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
+    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
     let destinationSlide = document.createElement("li")
     destinationSlide.className = "destination-slide"
+    destinationSlide.setAttribute("id", `${tripDetails.id}`)
+    console.log(destinationSlide);
     destinationSlide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
@@ -147,16 +150,15 @@ class DomUpdates {
         </figcaption>
       </figure>`
     )
-    this.createDestinationCaption(tripDisplayContainer, destination, destinationSlide)
+    this.createDestinationCaption(tripDisplayContainer, destination, destinationSlide, tripDetails)
     tripCatalogList.append(destinationSlide);
   }
 
-  createDestinationCaption(tripDisplayContainer, destination, destinationSlide) {
+  createDestinationCaption(tripDisplayContainer, destination, destinationSlide, tripDetails) {
     let caption = destinationSlide.getElementsByTagName('figcaption')[0];
     if (tripDisplayContainer.className === "destinations-catalog") {
       return caption.innerHTML = `${destination.destination}`
     } 
-    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
     caption.innerHTML = `
         <h3 class="location">${destination.destination}</h3>
 				<h6>Date:</h6>
@@ -171,14 +173,23 @@ class DomUpdates {
     if (tripDisplayContainer.className === "pending-user-trips") {
       this.addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer)
     }
-    // return tripDetailsContainer
   }
 
   addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer) {
-    let approveButton = document.createElement("button")
-    approveButton.className = "approve-pending-trip-btn";
-    approveButton.innerText = "Approve!";
-    return caption.append(approveButton)
+    let costumer = this.travelers.find(traveler => traveler.id === tripDetails.userID);
+    caption.insertAdjacentHTML('beforeend', `
+			<h6>Costumer Name:</h6>
+			<p>${costumer.name}<p>
+		`)
+    this.addAgencyActionButtons(caption)
+  }
+
+  addAgencyActionButtons(caption) {
+    let agencyActionButtons = `
+		<button class="approve-pending-trip-btn" name="approveBtn">Approve!</button>
+		<button class="delete-pending-trip-btn" name="denyBtn">Cancel!</button>
+		`
+    return caption.insertAdjacentHTML('beforeend', agencyActionButtons);
   }
 
   createUserYear2DateFinanceMetric(userNode, financeMetric) {
