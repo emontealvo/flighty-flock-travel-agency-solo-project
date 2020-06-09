@@ -1,0 +1,14 @@
+main {
+	@include flexDisplay(column, center, center);
+
+	section {
+		width: 95%;
+
+		.finance-metric {
+			@include addColor($light-teal, $dark-brown);
+			text-align: center;
+			font-size: 33px;
+		}
+	}
+
+}

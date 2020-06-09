@@ -36,6 +36,26 @@ class ApiFetch {
       .then(response => console.log(response))
       .catch(err => console.log(err));
   }
+
+  approveTripRequest(tripID) {
+    if (typeof tripId !== 'number') {
+      return console.log("Invalid ID")
+    }
+		
+    let url = `${this.rootUrl}/trips/updateTrip`;
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify({
+        id: tripId,
+        status: 'pending'
+      })
+    })
+      .then(response => console.log(response))
+      .catch(err => console.log(err))
+  }
 }
 
 export default ApiFetch;

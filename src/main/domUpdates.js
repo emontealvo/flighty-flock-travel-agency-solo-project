@@ -1,4 +1,3 @@
-/*eslint max-len: disable*/
 import Agency from './agency'
 import Traveler from './traveler'
 import ApiFetch from './apiFetch'
@@ -123,7 +122,7 @@ class DomUpdates {
   createDestinationCatalog(tripDisplayContainer, destinations) {
     tripDisplayContainer.innerHTML = '';
     let tripCatalog = document.createElement("div");
-    tripCatalog.className = "tripCatalog";
+    tripCatalog.className = "trip-catalog";
     this.createAllDestinationSlides(tripCatalog, destinations, tripDisplayContainer);
     tripDisplayContainer.appendChild(tripCatalog);
   }
@@ -145,7 +144,6 @@ class DomUpdates {
           <img src=${destination.image} alt=${destination.alt}>
         </div>
         <figcaption>
-          <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
     )
@@ -154,9 +152,13 @@ class DomUpdates {
   }
 
   createDestinationCaption(tripDisplayContainer, destination, destinationSlide) {
-    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
     let caption = destinationSlide.getElementsByTagName('figcaption')[0];
+    if (tripDisplayContainer.className === "destinations-catalog") {
+      return caption.innerHTML = `${destination.destination}`
+    } 
+    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
     caption.innerHTML = `
+        <h3 class="location">${destination.destination}</h3>
 				<h6>Date:</h6>
 				<p>${tripDetails.date}</p>
 				<h6>Duration: </h6>
@@ -237,5 +239,4 @@ class DomUpdates {
 }
 
 export default DomUpdates;
-
 
