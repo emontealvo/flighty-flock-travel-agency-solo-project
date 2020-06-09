@@ -18,8 +18,6 @@ class DomUpdates {
       this.createTripRequest(this.tripRequestForm.children);
     });
     this.pendingUserTrips.addEventListener('click', () => {
-      event.preventDefault();
-      //console.log(event.target);
       this.postAgencyDecision(event)
     })
   }
@@ -200,12 +198,16 @@ class DomUpdates {
 				<p>${tripDetails.travelers}</p>
 			` 
     if (tripDisplayContainer.className === "pending-user-trips") {
-      this.addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer)
-      this.addAgencyActionButtons(caption, tripDetails)
+      this.addCostumerName(caption, tripDetails)
+      this.addAgencyResponseButtons(caption, tripDetails)
+    }
+
+    if (tripDisplayContainer.className === "ongoing-trips-catalog") {
+      this.addCostumerName(caption, tripDetails)
     }
   }
 
-  addXtraCaptionDetails4Agency(caption, tripDetails) {
+  addCostumerName(caption, tripDetails) {
     let costumer = this.travelers.find(traveler => traveler.id === tripDetails.userID);
     caption.insertAdjacentHTML('beforeend', `
 			<h6>Costumer Name:</h6>
@@ -213,14 +215,14 @@ class DomUpdates {
 		`)
   }
 
-  addAgencyActionButtons(caption, tripDetails) {
-    let agencyActionButtons = `
+  addAgencyResponseButtons(caption, tripDetails) {
+    let agencyResponseButtons = `
 		<form class="trip-request-response-btns">
 			<button class="approve-pending-trip-btn" name="approveTripBtn" value="${tripDetails.id}"> Approve!</button>
 			<button class="delete-pending-trip-btn" name ="cancelTripBtn" value="${tripDetails.id}">Cancel!</button>
 		</form>
 		`
-    return caption.insertAdjacentHTML('beforeend', agencyActionButtons);
+    return caption.insertAdjacentHTML('beforeend', agencyResponseButtons);
   }
 
   createOngoingTripsCatalog(tripsDisplayContainer) {
@@ -261,14 +263,18 @@ class DomUpdates {
       status: 'pending',
       suggestedActivities: []
     }
-
+		
+    const message = `
+			This trip will cost ${this.user.calculateTripCost4Traveler(tripRequest)}
+			You will be charged after your trip is approved!
+		`
     const apiRequest = new ApiFetch();
 		
     apiRequest.makeTripRequest(tripRequest)
-      .then(response => console.log(response))
+      .then(response => alert(message))
       .catch(err => console.log(err));	
 
-    form.reset();
+    this.tripRequestForm.reset();
   }
 
   // AGENCY POST REQUEST
