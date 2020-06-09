@@ -118,8 +118,7 @@ class DomUpdates {
         this.user.calculateAgencyYearlyIncome('2020'))
       this.createDestinationCatalog(this.pendingUserTrips, destinations)
       this.createOngoingTripsCatalog(this.ongoingTripsCatalog);
-      document.querySelector(".approve-pending-trip-btn").addEventListener('click', () => 
-        console.log('poop'));
+      this.addAgencyTripRequestResponse();
     }
   }
 
@@ -197,7 +196,7 @@ class DomUpdates {
 			` 
     if (tripDisplayContainer.className === "pending-user-trips") {
       this.addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer)
-      this.addAgencyActionButtons(caption)
+      this.addAgencyActionButtons(caption, tripDetails)
     }
   }
 
@@ -209,10 +208,12 @@ class DomUpdates {
 		`)
   }
 
-  addAgencyActionButtons(caption) {
+  addAgencyActionButtons(caption, tripDetails) {
     let agencyActionButtons = `
-		<button class="approve-pending-trip-btn" name="approveBtn">Approve!</button>
-		<button class="delete-pending-trip-btn" name="denyBtn">Cancel!</button>
+		<form class="trip-request-response-btns">
+			<button class="approve-pending-trip-btn" name="approveTripBtn" value="${tripDetails.id}"> Approve!</button>
+			<button class="delete-pending-trip-btn" name ="CancelTripBtn" value="${tripDetails.id}">Cancel!</button>
+		</form>
 		`
     return caption.insertAdjacentHTML('beforeend', agencyActionButtons);
   }
@@ -223,6 +224,8 @@ class DomUpdates {
       .map(trip => this.user.findDestinationDetails(trip));
     this.createDestinationCatalog(tripsDisplayContainer, destinations)
   }
+
+  // TRAVELER POST REQuEST
 
   displayRequestForm() {
     this.tripRequestForm.classList.toggle('hidden');
@@ -262,6 +265,19 @@ class DomUpdates {
       .catch(err => console.log(err));	
 
     form.reset();
+  }
+
+  // AGENCY POST REQUEST
+  addAgencyTripRequestResponse() {
+    let tripRequestResponseBtns = document.querySelector(".trip-request-response-btns")
+    tripRequestResponseBtns.addEventListener('click', () => {
+      event.preventDefault();
+      this.postAgencyDecision(tripRequestResponseBtns)
+    })
+  }
+
+  postAgencyDecision(tripRequestResponseBtns) {
+    console.log(tripRequestResponseBtns);
   }
 }
 
