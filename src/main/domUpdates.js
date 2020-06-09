@@ -15,9 +15,13 @@ class DomUpdates {
     this.loginForm.addEventListener('submit', () => this.logUserIn());
     this.bookTripBtn.addEventListener('click', () => this.displayRequestForm());
     this.tripRequestForm.addEventListener('submit', () => {
-      event.preventDefault();
       this.createTripRequest(this.tripRequestForm.children);
     });
+    this.pendingUserTrips.addEventListener('click', () => {
+      event.preventDefault();
+      //console.log(event.target);
+      this.postAgencyDecision(event)
+    })
   }
 
   logUserIn() {
@@ -75,6 +79,7 @@ class DomUpdates {
     this.agencyPage.classList.remove('hidden');
     this.travelerPage.classList.remove('hidden');
     localStorage.clear()
+    window.location.reload()
   }
 
   checkLocalStorage4User() {
@@ -212,14 +217,13 @@ class DomUpdates {
     let agencyActionButtons = `
 		<form class="trip-request-response-btns">
 			<button class="approve-pending-trip-btn" name="approveTripBtn" value="${tripDetails.id}"> Approve!</button>
-			<button class="delete-pending-trip-btn" name ="CancelTripBtn" value="${tripDetails.id}">Cancel!</button>
+			<button class="delete-pending-trip-btn" name ="cancelTripBtn" value="${tripDetails.id}">Cancel!</button>
 		</form>
 		`
     return caption.insertAdjacentHTML('beforeend', agencyActionButtons);
   }
 
   createOngoingTripsCatalog(tripsDisplayContainer) {
-    console.log(tripsDisplayContainer)
     let destinations = this.user.findOngoingTrips()
       .map(trip => this.user.findDestinationDetails(trip));
     this.createDestinationCatalog(tripsDisplayContainer, destinations)
@@ -269,15 +273,32 @@ class DomUpdates {
 
   // AGENCY POST REQUEST
   addAgencyTripRequestResponse() {
-    let tripRequestResponseBtns = document.querySelector(".trip-request-response-btns")
-    tripRequestResponseBtns.addEventListener('click', () => {
-      event.preventDefault();
-      this.postAgencyDecision(tripRequestResponseBtns)
-    })
+    return 
   }
 
-  postAgencyDecision(tripRequestResponseBtns) {
-    console.log(tripRequestResponseBtns);
+  postAgencyDecision(event) {
+    let agentResponse
+    let agentResponseApi = new ApiFetch();
+		
+    if (event.target.name === "approveTripBtn") {
+      agentResponse = {
+        id: parseInt(event.target.value),
+        status: "approved"
+      }
+      agentResponseApi.response2TripRequest(agentResponse)
+        .then(response => console.log(response))
+        .catch(err => console.log(err))
+    }
+
+    if (event.target.name === "cancelTripBtn") {
+      agentResponse = {
+        id: parseInt(event.target.value),
+      }
+      agentResponseApi.cancelTripRequest(agentResponse)
+        .then(response => console.log(response))
+        .catch(err => console.log(err))
+    }
+
   }
 }
 
