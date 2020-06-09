@@ -1,10 +1,12 @@
-.carousel-container {
+.trip-catalog {
   max-width: 1044px;
+	max-height: 600px;
   margin: 0 auto;
+	overflow-y: scroll;
   padding: 0 20px;
 }
 
-.carousel {
+.destination-list {
   display: block;
   text-align: left;
   position: relative;
@@ -14,23 +16,20 @@
 .destination-slide {
   position: relative;
   z-index: 1;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  padding: 12px; 
+  margin: 13px;
   box-sizing: border-box;
   display: flex;
 }
 
 .destination-slide {
+	@include addColor($tan, $dark-brown);
   position: relative;
   display: block;
   flex: 1 0 100%;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  transition: all 300ms ease-out;
-  vertical-align: top;
   box-sizing: border-box;
   white-space: normal;
   
@@ -50,7 +49,7 @@
       object-fit: cover;
   }
   
-  figcaption, .trip-details {
+  figcaption {
       align-self: flex-end;
       padding: 20px 20px 0 20px;
       flex: 0 0 auto;
@@ -58,6 +57,11 @@
       min-width: 150px;
   }
   
+	h6 {
+		font-size: 1em;
+		margin: 0px;
+	}
+
   .location {
       margin-top: 1rem;
       color: rgba(0, 0, 0, 0.5);
@@ -69,45 +73,3 @@
   }
 }
 
-.carousel__thumbnails {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  
-  margin: 0 -10px;
-  
-  .destination-slide + & {
-      margin-top: 20px;
-  }
-  
-  li {        
-      flex: 1 1 auto;
-      max-width: calc((100% / 6) - 20px);  
-      margin: 0 10px;
-      transition: all 300ms ease-in-out;
-  }
-  
-  label {
-      display: block;
-      @include aspect-ratio(1,1);
-      
-                
-      &:hover,
-      &:focus {
-          cursor: pointer;
-          
-          img {
-              box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.25);
-              transition: all 300ms ease-in-out;
-          }
-      }
-  }
-  
-  img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-  }
-}
