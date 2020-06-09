@@ -35,7 +35,7 @@ class DomUpdates {
 
     return (userType === 'traveler' && passWordCheck) ? this.startTravelerUx(username)
       : (userType === 'agency' && passWordCheck) ? this.startAgencyUx()
-        : alert('Invalid Username');
+        : (passWordCheck) ? alert('Invalid Username') : alert('Invalid Password');
   }
 
   startTravelerUx(username) {
@@ -265,7 +265,7 @@ class DomUpdates {
     }
 		
     const message = `
-			This trip will cost ${this.user.calculateTripCost4Traveler(tripRequest)}
+			This trip will cost $${this.user.calculateTripCost4Traveler(tripRequest)}
 			You will be charged after your trip is approved!
 		`
     const apiRequest = new ApiFetch();

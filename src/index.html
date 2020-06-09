@@ -33,16 +33,14 @@
       </form>
     <main>
       <section class="welcome-page">
+				<article class="welcome-banner">
+					<h1>Welcome!</h1>
+					<h3>Check out our Destinations!</h3>
+				</article>
 				<article class="destinations-catalog"></article>
       </section>
       <section class="traveler-page hidden">
 				<button class="book-trip-btn" type="button" form="trip-request-form">Book A Trip!</button>
-				<article class="finance-metric" id="traveler-Y2D-expenses"> 
-					
-				</article>
-				<article class="traveler-trip-history">
-
-				</article>
           <form class="hidden" id="trip-request-form" name="tripRequestForm">
             <label for="start-date">Date:</label>
             <input type="date" id="start-date" name="startDate" min="2020-06-08" max="2022-12-31">
@@ -51,11 +49,13 @@
               <option value="None, yet :)">Where to?</option>
             </select>
             <label for="traveler-amount">Travelers:</label>
-            <input type="number" id="traveler-amount" name="travelerAmount"> 
+            <input type="number" id="traveler-amount" name="travelerAmount" min="0"> 
             <label for="trip-duration">Days:</label>
-            <input type="number" id="trip-duration" name="tripDuration">
+            <input type="number" id="trip-duration" name="tripDuration" min="0">
 						<button type="submit">Submit Request</button>
           </form>
+				<article class="finance-metric" id="traveler-Y2D-expenses"></article>
+				<article class="traveler-trip-history"></article>
       </section>
       <section class="agency-page hidden">
 				<article class="finance-metric" id="agency-Y2D-income"></article>
