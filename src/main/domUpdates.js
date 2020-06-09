@@ -104,53 +104,70 @@ class DomUpdates {
     } else if (this.user.type === "Traveler") {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
-      this.createDestinationCatalog(this.travelerPage, destinations);
+      this.createDestinationCatalog(this.travelerTripHistory, destinations);
       this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
     } else if (this.user.type === "agency") {
       let destinations = this.user.pendingTrips
         .map(trip =>  this.user.findDestinationDetails(trip));
-      this.createDestinationCatalog(this.agencyPage, destinations)
-      //this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1], this.user.calculateAgencyYearlyIncome('2020'))
+      this.createDestinationCatalog(this.pendingUserTrips, destinations)
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1], this.user.calculateAgencyYearlyIncome('2020'))
     }
   }
 
-  createDestinationCatalog(element, destinations) {
-    element.innerHTML = '';
-    let catalog = document.createElement("div");
-    catalog.className = "catalog";
-    this.createAllDestinationSlides(catalog, destinations);
-    element.appendChild(catalog);
+  createDestinationCatalog(tripDisplayContainer, destinations) {
+    tripDisplayContainer.innerHTML = '';
+    let tripCatalog = document.createElement("div");
+    tripCatalog.className = "tripCatalog";
+    this.createAllDestinationSlides(tripCatalog, destinations, tripDisplayContainer);
+    tripDisplayContainer.appendChild(tripCatalog);
   }
 
-  createAllDestinationSlides(element, destinations) {
-    let catalogList = document.createElement("ul")
-    catalogList.className = "destination-list"
+  createAllDestinationSlides(tripCatalog, destinations, tripDisplayContainer) {
+    let tripCatalogList = document.createElement("ul")
+    tripCatalogList.className = "destination-list"
     destinations.forEach(destination => 
-      this.createDestinationSlide(catalogList, destination))
-    element.appendChild(catalogList)
+      this.createDestinationSlide(tripCatalogList, destination, tripDisplayContainer))
+    tripCatalog.appendChild(tripCatalogList)
   }
 
-  createDestinationSlide(element, destination) {
+  createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
     let slide = document.createElement("li")
-    slide.className = "carousel__slide"
+    slide.className = "destination-slide"
     slide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
           <img src=${destination.image} alt=${destination.alt}>
         </div>
         <figcaption>
-          ${this.createDestinationCaption(element)}
+          ${this.createDestinationCaption(tripDisplayContainer, destination)}
           <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
     )
-    element.append(slide);
+    tripCatalogList.append(slide);
   }
 
-  createDestinationCaption(element) {
-	 console.log(element)
+  createDestinationCaption(tripDisplayContainer, destination) {
+    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
+    let captionHTML = `
+				<h6>Date:</h6>
+				<p>${tripDetails.date}</p>
+				<h6>Duration: </h6>
+				<p>${tripDetails.duration} days</p>
+				<h6>Status: </h6>
+				<p>${tripDetails.status}</p>
+				<h6>Travelers: </h6>
+				<p>${tripDetails.travelers}</p>
+			` 
+    if (tripDisplayContainer.className === "pending-user-trips") {
+      this.addXtraCaptionDetails4Agency(captionHTML, tripDetails, tripDisplayContainer)
+    }
+    return captionHTML
   }
 
+  addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer) {
+    console.log(caption);
+  }
 
   createUserYear2DateFinanceMetric(userNode, financeMetric) {
     let message = this.createFinanceMetricMessage(userNode, financeMetric)
@@ -204,6 +221,8 @@ class DomUpdates {
     apiRequest.makeTripRequest(tripRequest)
       .then(response => console.log(response))
       .catch(err => console.log(err));	
+
+    form.reset();
   }
 }
 

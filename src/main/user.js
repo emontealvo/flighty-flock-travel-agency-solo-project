@@ -9,13 +9,6 @@ class User {
     return this.trips.reduce((acc, trip) => acc += this.calculateTripCost(trip), 0)
   }
 
-  findDestinationDetails(trip) {
-    let destination = this.destinationKey
-      .find(destination => trip.destinationID === destination.id);
-    destination.tripID = trip.id;
-    return destination;
-  }
-	
   calculateTripCost(trip) {
     let destination = this.findDestinationDetails(trip)
     let lodgingCost = destination.estimatedLodgingCostPerDay * trip.duration;
@@ -24,6 +17,13 @@ class User {
     return lodgingCost + flightCost;
   }
 
+  findDestinationDetails(trip) {
+    let destination = this.destinationKey
+      .find(destination => trip.destinationID === destination.id);
+    destination.tripID = trip.id;
+    return destination;
+  }
+	
   calculateTripCost4Yr(year) {
     if (!year.match(/\d{4}/)) {
       return 'Invalid Input';
