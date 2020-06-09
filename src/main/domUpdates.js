@@ -101,24 +101,45 @@ class DomUpdates {
   createMainDisplay() {
     if (this.user.type === "Guest") {
       this.createDestinationCatalog(this.destinationsCatalog, this.destinations);
-    } else if (this.user.type === "Traveler") {
+    }
+
+    if (this.user.type === "Traveler") {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
-      this.createDestinationCatalog(this.travelerTripHistory, destinations);
       this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0],
         this.user.calculateTravelExpenses4yr('2020'));
-    } else if (this.user.type === "agency") {
-      let destinations = this.user.pendingTrips
-        .map(trip =>  this.user.findDestinationDetails(trip));
-      this.createDestinationCatalog(this.pendingUserTrips, destinations)
-      console.log(this.pendingUserTrips);
+      this.createDestinationCatalog(this.travelerTripHistory, destinations);
+    }
+
+    if (this.user.type === "agency") {
+      let destinations = this.user.pendingTrips.map(trip =>
+        this.user.findDestinationDetails(trip));
       this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1],
         this.user.calculateAgencyYearlyIncome('2020'))
+      this.createDestinationCatalog(this.pendingUserTrips, destinations)
+      this.createOngoingTripsCatalog(this.ongoingTripsCatalog);
       document.querySelector(".approve-pending-trip-btn").addEventListener('click', () => 
         console.log('poop'));
     }
   }
 
+  createUserYear2DateFinanceMetric(userNode, financeMetric) {
+    let message = this.createFinanceMetricMessage(userNode, financeMetric)
+    userNode.innerHTML = ''
+    userNode.insertAdjacentHTML('afterbegin', 
+      `<h1>${message}</h1>`);
+  }
+
+  createFinanceMetricMessage(userNode, financeMetric) {
+    if (userNode.id === "traveler-Y2D-expenses") {
+      return `Welcome ${this.user.name}! You've spent $${financeMetric} on trips this year!`	
+    } 
+
+    if (userNode.id === "agency-Y2D-income") {
+      return `We've generated $${financeMetric} from trips this year!`
+    }
+  }
+	
   createDestinationCatalog(tripDisplayContainer, destinations) {
     tripDisplayContainer.innerHTML = '';
     let tripCatalog = document.createElement("div");
@@ -136,11 +157,15 @@ class DomUpdates {
   }
 
   createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
-    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
+    let tripDetails
     let destinationSlide = document.createElement("li")
+		
+    if (tripDisplayContainer.className !== "destinations-catalog") {
+		  tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
+      destinationSlide.setAttribute("id", `${tripDetails.id}`)
+    }
+
     destinationSlide.className = "destination-slide"
-    destinationSlide.setAttribute("id", `${tripDetails.id}`)
-    console.log(destinationSlide);
     destinationSlide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
@@ -172,16 +197,16 @@ class DomUpdates {
 			` 
     if (tripDisplayContainer.className === "pending-user-trips") {
       this.addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer)
+      this.addAgencyActionButtons(caption)
     }
   }
 
-  addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer) {
+  addXtraCaptionDetails4Agency(caption, tripDetails) {
     let costumer = this.travelers.find(traveler => traveler.id === tripDetails.userID);
     caption.insertAdjacentHTML('beforeend', `
 			<h6>Costumer Name:</h6>
 			<p>${costumer.name}<p>
 		`)
-    this.addAgencyActionButtons(caption)
   }
 
   addAgencyActionButtons(caption) {
@@ -192,22 +217,13 @@ class DomUpdates {
     return caption.insertAdjacentHTML('beforeend', agencyActionButtons);
   }
 
-  createUserYear2DateFinanceMetric(userNode, financeMetric) {
-    let message = this.createFinanceMetricMessage(userNode, financeMetric)
-    userNode.innerHTML = ''
-    userNode.insertAdjacentHTML('afterbegin', 
-      `<h1>${message}</h1>`);
+  createOngoingTripsCatalog(tripsDisplayContainer) {
+    console.log(tripsDisplayContainer)
+    let destinations = this.user.findOngoingTrips()
+      .map(trip => this.user.findDestinationDetails(trip));
+    this.createDestinationCatalog(tripsDisplayContainer, destinations)
   }
 
-  createFinanceMetricMessage(userNode, financeMetric) {
-    if (userNode.id === "traveler-Y2D-expenses") {
-      return `You've spent $${financeMetric} on trips this year!`	
-    } 
-
-    if (userNode.id === "agency-Y2D-income") {
-      return `We've generated $${financeMetric} from trips this year!`
-    }
-  }
   displayRequestForm() {
     this.tripRequestForm.classList.toggle('hidden');
     this.createDestinatonOptions();

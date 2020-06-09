@@ -20,6 +20,7 @@ const querySelectors = {
   travelerTripHistory: document.querySelector('.traveler-trip-history'),
   agencyPage: document.querySelector('.agency-page'),
   pendingUserTrips: document.querySelector('.pending-user-trips'),
+  ongoingTripsCatalog: document.querySelector('.ongoing-trips-catalog'),
   destinationsCatalog: document.querySelector('.destinations-catalog'),
   travelerTrips: document.querySelector('.traveler-trips'),
   tripRequestForm: document.forms.tripRequestForm,
@@ -45,7 +46,6 @@ const getData = () => {
       domUpdates.declareEventListeners();
       domUpdates.checkLocalStorage4User();
       domUpdates.createMainDisplay();
-      console.log(domUpdates.userFinanceMetricArticles)
       return domUpdates
     })
     .then(response => console.log(response))
