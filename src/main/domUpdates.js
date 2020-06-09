@@ -1,3 +1,4 @@
+/*eslint max-len: disable*/
 import Agency from './agency'
 import Traveler from './traveler'
 import ApiFetch from './apiFetch'
@@ -105,12 +106,17 @@ class DomUpdates {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.travelerTripHistory, destinations);
-      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0],
+        this.user.calculateTravelExpenses4yr('2020'));
     } else if (this.user.type === "agency") {
       let destinations = this.user.pendingTrips
         .map(trip =>  this.user.findDestinationDetails(trip));
       this.createDestinationCatalog(this.pendingUserTrips, destinations)
-      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1], this.user.calculateAgencyYearlyIncome('2020'))
+      console.log(this.pendingUserTrips);
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1],
+        this.user.calculateAgencyYearlyIncome('2020'))
+      document.querySelector(".approve-pending-trip-btn").addEventListener('click', () => 
+        console.log('poop'));
     }
   }
 
@@ -131,25 +137,26 @@ class DomUpdates {
   }
 
   createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
-    let slide = document.createElement("li")
-    slide.className = "destination-slide"
-    slide.insertAdjacentHTML('afterbegin', 
+    let destinationSlide = document.createElement("li")
+    destinationSlide.className = "destination-slide"
+    destinationSlide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
           <img src=${destination.image} alt=${destination.alt}>
         </div>
         <figcaption>
-          ${this.createDestinationCaption(tripDisplayContainer, destination)}
           <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
     )
-    tripCatalogList.append(slide);
+    this.createDestinationCaption(tripDisplayContainer, destination, destinationSlide)
+    tripCatalogList.append(destinationSlide);
   }
 
-  createDestinationCaption(tripDisplayContainer, destination) {
+  createDestinationCaption(tripDisplayContainer, destination, destinationSlide) {
     let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
-    let captionHTML = `
+    let caption = destinationSlide.getElementsByTagName('figcaption')[0];
+    caption.innerHTML = `
 				<h6>Date:</h6>
 				<p>${tripDetails.date}</p>
 				<h6>Duration: </h6>
@@ -160,13 +167,16 @@ class DomUpdates {
 				<p>${tripDetails.travelers}</p>
 			` 
     if (tripDisplayContainer.className === "pending-user-trips") {
-      this.addXtraCaptionDetails4Agency(captionHTML, tripDetails, tripDisplayContainer)
+      this.addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer)
     }
-    return captionHTML
+    // return tripDetailsContainer
   }
 
   addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer) {
-    console.log(caption);
+    let approveButton = document.createElement("button")
+    approveButton.className = "approve-pending-trip-btn";
+    approveButton.innerText = "Approve!";
+    return caption.append(approveButton)
   }
 
   createUserYear2DateFinanceMetric(userNode, financeMetric) {
