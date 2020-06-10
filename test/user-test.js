@@ -34,7 +34,7 @@ describe('User Class', () => {
   });
 
   it('should hold onto trips', () => {
-    expect(user).to.have.property('trips');;
+    expect(user).to.have.property('trips');
   });
 
   it('should default to an empty array if no trips are given', () => {
@@ -82,7 +82,7 @@ describe('User Class behavior', () => {
   });
 
   it('should calculate total trip cost correctly', () => {
-    expect(user.calculateCost4AllTrips()).to.equal(61780);
+    expect(user.calculateCost4AllTrips()).to.equal(78550);
   });
 
   it('should calculate cost for single trip', () => {

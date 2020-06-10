@@ -57,6 +57,6 @@ describe("Agency behavior", () => {
   });
 
   it('should find all ongoing trips', () => {
-    expect(agency.findOngoingTrips()).to.deep.equal([trips[2]])
+    expect(agency.findOngoingTrips()).to.deep.equal([trips[2], trips[6]])
   })
 });
