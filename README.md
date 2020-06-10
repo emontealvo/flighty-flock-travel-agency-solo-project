@@ -1,105 +1,56 @@
-# Webpack Starter Kit
+# FlightyFlock Travel Agency
 
-## Clone This Repo
+## Setup/Installation:
 
-That's right, _clone_ not fork. You will use this repo multiple times, but you can only fork a repository once. So here is what you need to do to clone the repo and still be able to push changes to your repo:
+1. First clone the repository into desired directory. 
+2. Then, `cd` into the directory, and run `npm install` to install all project dependencies.
+3. After that, run `npm start` to start a local server and initialize webpack compiler.
+4. Application should now be viewable on browser by typing `http://localhost:8080/` in address line ** Note: Terminal window should remain open **
+5. Testing for this application can be achieved by running `npm test` in your terminal, all dependencies for testing will already be installed.
 
-1. Clone down this repo. Since you don't want to name your project "webpack-starter-kit", you can use an optional argument when you run `git clone` (you replace the `[...]` with the terminal command arguments): `git clone [remote-address] [what you want to name the repo]`
-1. Remove the default remote: `git remote rm origin` (notice that `git remote -v` not gives you back nothing)
-1. Create a new repo on GitHub with the name of `[what you want to name the repo]` to be consistent with naming
-1. Copy the address that you would use to clone down this repo - something like `git@github.com:...`
-1. Add this remote to your cloned down repo: `git remote add origin [address you copied in the previous step]` - do not include the brackets
+## Abstract 
 
-Now try to commit something and push it up to your new repo. If everything is setup correctly, you should see the changes on GitHub.
+- This was a project during my time at Turing School of Software. This is the final solo capstone project of the second six week module of the program. This is the halfway point of this program's curriculum. During this six weeks, we were introduced to SASS, and testing spies; Additionally, we further expolored the concepts behind OOP, namely class inheratence, in JavaScript. Lastly, we begun working with APIs. This project was meant to synthisize all these concepts by creating a travel agency web app, where trips can be added by a traveler to be approved by the agency. 
 
-## Setup
+- To demostrate understanding of inheretance and OOP, to me the larger learing objectives, I used an user class with some base methods from which more spefic methods are based within the subclasses of traveler and agency. Additionally, I used a DOM updates class and API fetch class, to further seperate functionality. My goal was to keep the index.js file as succint as possible, more notes on that later.
 
-After one person has gone through the steps of cloning down this repo and editing the remote, everyone should clone down the repo. 
+## Challenges and Wins 
 
-Then install the library dependencies. Run:
+#### Challenges
 
-```bash
-npm install
-```
+- Most of the challenges were self imposed; I greatly overestimated my abilities. 
 
-To verify that it is setup correctly, run `npm start` in your terminal. Go to `http://localhost:8080/` and you should see a page with some `h1` text, Turing logo image and a beautiful gradient background. If that's the case, you're good to go. Enter `control + c` in your terminal to stop the server at any time.
+- This led me to exploring new technologies for far too long early in the project.
 
-## Where to Add Your Code
+- First and foremost, my understading of chai spies. I thought I was structuring my data and script in such a way that would make chai spies easy and decided to leave these to the last day. Alas, I was sorely mistaken, and I am back to questioning what I know. 
 
-### JavaScript
+- I tried adopting two outside technologies inside my project: moment.js and a SASS carousel I found on codepen. Both appeared approachable at first glance, but when trying to adapt them to my own project not understanding the granular details on how they worked held me back. There are some subtleties to SASS that really point out some of my CSS weaknesses, and point out how powerful it can be. Only excited to explore it further. 
 
-You have to be very intentional with where you add your feature code. This repo uses a tool called [webpack](https://webpack.js.org/) to combine many JavaScript files into one big file. Webpack enables you to have many, separate JavaScript files to keep your code organized and readable. Webpack expects all of your code files to be in a specific place, or else it doesn't know how to combine them all behind the scenes.
+- It's unfortunate that I wasn't quite able to hack the moment.js package, but I explored it enough to want to revisit it in the future to more easily adapt to future projects. On the bright side, I realized that the native JS Date object is actually more powerfull than I thought.  
 
-**Create all of your feature code files in the `src` directory.**
+- Even though I am super proud of my determination to adpot a notoriously difficult technology (vim) to edit my code, it probably was too big a mental load, which eventually prevented me from achiving the kind of work I am able to, and want to, create.  
 
-Since code is separated into multiple files, you need to use the `import` and `export` syntax to share code across file.
+### Wins
 
-Here is a video that walks through some information about [import and export](https://www.youtube.com/watch?v=_3oSWwapPKQ). There are a lot of resources out there about `import` and `export`, and resources will sometimes call them `ES6 modules`. It's something you will see in React and beyond.
+- I was able to use a concept I learned from my week-long hiatus into functional programming. Albeit, this did not make testing with spies any easier than I thought it would.  
 
-### HTML
+- I exclusively used vim editor to create this project. This was more a personal challange, as it does reflect in any way my understading of JavaScript, and most likely led to a missed learning opportunity around chai spies. On the other hand, I feel more comfortable within my terminal environment, and navigating my machine with only the keyboard. While I may still code at a much slower pace inside vim than VSCode, my previous editor, I feel the continuous emphais on keyboard navigation will only benifit my coding speed/debugging on the long run. 
 
-Add the HTML you need in the `index.html` file in the `./src` directory. There is some boilerplate HTML that exists from the start that you can modify.
+- Using vim, and being unfamiliar with it, made any insertion a meaningful action bringing additional awareness to the code I was typing. I thought this added mental awereness to each object I worked with, and, while my current slower overall speed kept me from eventually reflecting this on a tests file with approprite test, it was helpful to slow down and will hopefully show on the long run. 
 
-### CSS (SCSS/SASS)
+## Take Away
 
-This project is setup to use SCSS/SASS files by default instead of your regular CSS files. Add your SCSS files in the `src/css` directory. There is a `base.scss` file already there, but you can change this file and add multiple SCSS files in this directory.
+- Don't try to adopt any new technologies within meaningful project, and do what you know what to do really well instead. 
 
-This might sound weird, but you need to `import` your SCSS files in the JavaScript entry file (`index.js`) for the styles to be applied to your HTML. The example `base.scss` file has already been imported in the JavaScript entry file as an example.
+- Use less meaningful projects to explore different technologies that you want to adopt in the future.
 
-### Images
+- Focus on the curriculum, too much of these last weeks have been spent exploring niche topics like recursions, functional programming, and. lastly, vim editor. There will be plenty of time in the future to explore these topics.
 
-Add your image files in the `src/images` directory. Similar to CSS files, you need to `import` image files in the JavaScript entry file (`index.js`). Then go into the HTML and add an `img` element with the `src` attribute pointing to the `images` directory. There is an example in the `index.html` file for you to see.
-
-## How to View Your Code in Action
-
-In the terminal, run:
-
-```bash
-npm start
-```
-
-You will see a bunch of lines output to your terminal. One of those lines will be something like:
-
-```bash
-Project is running at http://localhost:8080/
-```
-
-Go to `http://localhost:8080/` in your browser to view your code running in the browser.
-
----
-
-## Test Files Organization
-
-Similar to feature code, your test code needs to be put in a specific place for it to run successfully.
-
-**Put all of your test files in the `test` directory.** As a convention, all test filenames should end with `-test.js`. For instance: `box-test.js`.
-
-## Running Your Tests
-
-Run your test suite using the command:
-
-```bash
-npm test
-```
-
-The test results will output to the terminal.
-
----
-
-## Linting Your Code
-
-Run the command in your terminal `npm run lint` to run the linter on your JavaScript code. There will be errors and warnings right from the start in this starter kit - the linter is still running successfully.
-
-Your linter will look at the JavaScript files you have within the `src` directory and the `test` directory. 
-
-## Webpack?
-
-If you look in the `package.json` file, you'll see one of the library dependencies called `webpack`. If you're interested in learning more about what Webpack is and how it works behind the scenes, take a look through the [Webpack configuration documentation](https://webpack.js.org/concepts/).
-
-## Deploying to GitHub Pages
-
-_If you are finished with the functionality and testing of your project_, then you can consider deploying your project to the web! This way anyone can play it without cloning down your repo.
-
-[GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
-
-If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
+## Technologies Used 
+- Vanilla JS
+- HTML
+- SASS
+- Mocha
+- Chai
+- Spies 
+- Edited on: Vim 
