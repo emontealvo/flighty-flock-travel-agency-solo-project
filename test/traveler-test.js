@@ -100,13 +100,13 @@ describe('Traveler additional properties and behavior', () => {
   it('should be able to calculate total amount of money spent on a trips for a year', () => {
     traveler = new Traveler(trips, destinations, travelerInfo[1])
 
-    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(7139);
+    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(2596);
   });
 
   it('should be able to calculate total yearly trip cost for multiple years', () => {
     traveler = new Traveler(trips, destinations, travelerInfo[2])
 
-    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(4565);
+    expect(traveler.calculateTravelExpenses4yr('2020')).to.deep.equal(0);
     expect(traveler.calculateTravelExpenses4yr('2019')).to.deep.equal(5819);
   });
 
