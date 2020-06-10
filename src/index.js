@@ -52,7 +52,6 @@ const getData = () => {
       domUpdates.checkLocalStorage4User();
       domUpdates.createMainDisplay();
     })
-    .then(response => console.log(response))
     .catch(err => console.log(err));
 }
 

@@ -46,7 +46,6 @@ class ApiFetch {
       }, 
       body: JSON.stringify(agentResponse)
     })
-      .then(response => console.log(response))
       .catch(err => console.log(err))
   }
 
@@ -60,7 +59,6 @@ class ApiFetch {
       body: JSON.stringify(agentResponse),
     })
       .then(respone => respone.json())
-      .then(response => console.log(response))
       .catch(err => console.log(err));
   }
 
