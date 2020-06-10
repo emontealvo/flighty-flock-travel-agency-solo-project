@@ -21,6 +21,7 @@ class User {
     let destination = this.destinationKey
       .find(destination => trip.destinationID === destination.id);
     destination.tripID = trip.id;
+    destination.userID = trip.userID
     return destination;
   }
 	

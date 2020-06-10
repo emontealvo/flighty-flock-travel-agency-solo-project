@@ -1,6 +1,6 @@
 import Agency from './agency'
 import Traveler from './traveler'
-import ApiFetch from './apiFetch'
+
 
 class DomUpdates {
   constructor(querySelectors, responseData) {
@@ -14,12 +14,6 @@ class DomUpdates {
     this.logoutBtn.addEventListener('click', () => this.logUserOut());
     this.loginForm.addEventListener('submit', () => this.logUserIn());
     this.bookTripBtn.addEventListener('click', () => this.displayRequestForm());
-    this.tripRequestForm.addEventListener('submit', () => {
-      this.createTripRequest(this.tripRequestForm.children);
-    });
-    this.pendingUserTrips.addEventListener('click', () => {
-      this.postAgencyDecision(event)
-    })
   }
 
   logUserIn() {
@@ -115,15 +109,14 @@ class DomUpdates {
     }
 
     if (this.user.type === "agency") {
-      let destinations = this.user.pendingTrips.map(trip =>
-        this.user.findDestinationDetails(trip));
+      let destinations = this.user.pendingTrips.map(trip => this.user.findDestinationDetails(trip));
       this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1],
-        this.user.calculateAgencyYearlyIncome('2020'))
+        this.user.calculateAgencyYearlyIncome('2020'));
       this.createDestinationCatalog(this.pendingUserTrips, destinations)
       this.createOngoingTripsCatalog(this.ongoingTripsCatalog);
-      this.addAgencyTripRequestResponse();
     }
   }
+
 
   createUserYear2DateFinanceMetric(userNode, financeMetric) {
     let message = this.createFinanceMetricMessage(userNode, financeMetric)
@@ -153,20 +146,33 @@ class DomUpdates {
   createAllDestinationSlides(tripCatalog, destinations, tripDisplayContainer) {
     let tripCatalogList = document.createElement("ul")
     tripCatalogList.className = "destination-list"
+
+    if (tripDisplayContainer.className === "pending-user-trips") {
+        this.user.pendingTrips.forEach(trip => {
+        let destination = this.user.findDestinationDetails(trip)
+        this.createDestinationSlide(tripCatalogList, destination, tripDisplayContainer)
+      })
+    }
+
     destinations.forEach(destination => 
-      this.createDestinationSlide(tripCatalogList, destination, tripDisplayContainer))
+      this.createDestinationSlide(tripCatalogList, destination, tripDisplayContainer));
     tripCatalog.appendChild(tripCatalogList)
   }
 
   createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
     let tripDetails
     let destinationSlide = document.createElement("li")
-		
-    if (tripDisplayContainer.className !== "destinations-catalog") {
+
+    if (tripDisplayContainer.className === "pending-user-trips") {
+      tripDetails = this.user.pendingTrips.find(trip => (trip.id === destination.tripID));
+      destinationSlide.setAttribute("id", `${tripDetails.id}`)       
+    }
+    
+    if (tripDisplayContainer.className !== "destinations-catalog"
+      && tripDisplayContainer.className !== 'pending-user-trips') {
 		  tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
       destinationSlide.setAttribute("id", `${tripDetails.id}`)
     }
-
     destinationSlide.className = "destination-slide"
     destinationSlide.insertAdjacentHTML('afterbegin', 
       `<figure>
@@ -231,8 +237,6 @@ class DomUpdates {
     this.createDestinationCatalog(tripsDisplayContainer, destinations)
   }
 
-  // TRAVELER POST REQuEST
-
   displayRequestForm() {
     this.tripRequestForm.classList.toggle('hidden');
     this.createDestinatonOptions();
@@ -245,66 +249,6 @@ class DomUpdates {
         `<option value=${destination.id}>${destination.destination}</option>`
       )
     });
-  }
-
-  createTripRequest(form) {
-    const createRequestId = () =>
-      parseInt(new Date().getTime().toString().slice(6));
-		
-    const reformatDate = () => form.startDate.value.split('-').join('/')
-
-    const tripRequest = {
-      id: createRequestId(),
-      userID: this.user.id,
-      destinationID: parseInt(form.destination.value),
-      travelers: parseInt(form.travelerAmount.value),
-      date: reformatDate(),
-      duration: parseInt(form.tripDuration.value), 
-      status: 'pending',
-      suggestedActivities: []
-    }
-		
-    const message = `
-			This trip will cost $${this.user.calculateTripCost4Traveler(tripRequest)}
-			You will be charged after your trip is approved!
-		`
-    const apiRequest = new ApiFetch();
-		
-    apiRequest.makeTripRequest(tripRequest)
-      .then(response => alert(message))
-      .catch(err => console.log(err));	
-
-    this.tripRequestForm.reset();
-  }
-
-  // AGENCY POST REQUEST
-  addAgencyTripRequestResponse() {
-    return 
-  }
-
-  postAgencyDecision(event) {
-    let agentResponse
-    let agentResponseApi = new ApiFetch();
-		
-    if (event.target.name === "approveTripBtn") {
-      agentResponse = {
-        id: parseInt(event.target.value),
-        status: "approved"
-      }
-      agentResponseApi.response2TripRequest(agentResponse)
-        .then(response => console.log(response))
-        .catch(err => console.log(err))
-    }
-
-    if (event.target.name === "cancelTripBtn") {
-      agentResponse = {
-        id: parseInt(event.target.value),
-      }
-      agentResponseApi.cancelTripRequest(agentResponse)
-        .then(response => console.log(response))
-        .catch(err => console.log(err))
-    }
-
   }
 }
 

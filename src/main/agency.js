@@ -13,7 +13,7 @@ class Agency extends User {
   
   findPendingTrips() {
     return this.trips
-      .filter(trip => trip.status === "pending")
+      .filter(trip => trip.status !== "approved")
       .sort((a, b) => 
         this.getTripDates(a).startDate < this.getTripDates(b).startDate ? -1 : 1)
   }
