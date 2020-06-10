@@ -15,9 +15,11 @@ class DomUpdates {
     this.loginForm.addEventListener('submit', () => this.logUserIn());
     this.bookTripBtn.addEventListener('click', () => this.displayRequestForm());
     this.tripRequestForm.addEventListener('submit', () => {
-      event.preventDefault();
       this.createTripRequest(this.tripRequestForm.children);
     });
+    this.pendingUserTrips.addEventListener('click', () => {
+      this.postAgencyDecision(event)
+    })
   }
 
   logUserIn() {
@@ -75,6 +77,7 @@ class DomUpdates {
     this.agencyPage.classList.remove('hidden');
     this.travelerPage.classList.remove('hidden');
     localStorage.clear()
+    window.location.reload()
   }
 
   checkLocalStorage4User() {
@@ -101,23 +104,48 @@ class DomUpdates {
   createMainDisplay() {
     if (this.user.type === "Guest") {
       this.createDestinationCatalog(this.destinationsCatalog, this.destinations);
-    } else if (this.user.type === "Traveler") {
+    }
+
+    if (this.user.type === "Traveler") {
       let destinations = this.user.trips
         .map(trip => this.user.findDestinationDetails(trip));
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0],
+        this.user.calculateTravelExpenses4yr('2020'));
       this.createDestinationCatalog(this.travelerTripHistory, destinations);
-      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[0], this.user.calculateTravelExpenses4yr('2020'))
-    } else if (this.user.type === "agency") {
-      let destinations = this.user.pendingTrips
-        .map(trip =>  this.user.findDestinationDetails(trip));
+    }
+
+    if (this.user.type === "agency") {
+      let destinations = this.user.pendingTrips.map(trip =>
+        this.user.findDestinationDetails(trip));
+      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1],
+        this.user.calculateAgencyYearlyIncome('2020'))
       this.createDestinationCatalog(this.pendingUserTrips, destinations)
-      this.createUserYear2DateFinanceMetric(this.userFinanceMetricArticles[1], this.user.calculateAgencyYearlyIncome('2020'))
+      this.createOngoingTripsCatalog(this.ongoingTripsCatalog);
+      this.addAgencyTripRequestResponse();
     }
   }
 
+  createUserYear2DateFinanceMetric(userNode, financeMetric) {
+    let message = this.createFinanceMetricMessage(userNode, financeMetric)
+    userNode.innerHTML = ''
+    userNode.insertAdjacentHTML('afterbegin', 
+      `<h1>${message}</h1>`);
+  }
+
+  createFinanceMetricMessage(userNode, financeMetric) {
+    if (userNode.id === "traveler-Y2D-expenses") {
+      return `Welcome ${this.user.name}! You've spent $${financeMetric} on trips this year!`	
+    } 
+
+    if (userNode.id === "agency-Y2D-income") {
+      return `We've generated $${financeMetric} from trips this year!`
+    }
+  }
+	
   createDestinationCatalog(tripDisplayContainer, destinations) {
     tripDisplayContainer.innerHTML = '';
     let tripCatalog = document.createElement("div");
-    tripCatalog.className = "tripCatalog";
+    tripCatalog.className = "trip-catalog";
     this.createAllDestinationSlides(tripCatalog, destinations, tripDisplayContainer);
     tripDisplayContainer.appendChild(tripCatalog);
   }
@@ -131,25 +159,35 @@ class DomUpdates {
   }
 
   createDestinationSlide(tripCatalogList, destination, tripDisplayContainer) {
-    let slide = document.createElement("li")
-    slide.className = "destination-slide"
-    slide.insertAdjacentHTML('afterbegin', 
+    let tripDetails
+    let destinationSlide = document.createElement("li")
+		
+    if (tripDisplayContainer.className !== "destinations-catalog") {
+		  tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
+      destinationSlide.setAttribute("id", `${tripDetails.id}`)
+    }
+
+    destinationSlide.className = "destination-slide"
+    destinationSlide.insertAdjacentHTML('afterbegin', 
       `<figure>
         <div>
           <img src=${destination.image} alt=${destination.alt}>
         </div>
         <figcaption>
-          ${this.createDestinationCaption(tripDisplayContainer, destination)}
-          <span class="location">${destination.destination}</span>
         </figcaption>
       </figure>`
     )
-    tripCatalogList.append(slide);
+    this.createDestinationCaption(tripDisplayContainer, destination, destinationSlide, tripDetails)
+    tripCatalogList.append(destinationSlide);
   }
 
-  createDestinationCaption(tripDisplayContainer, destination) {
-    let tripDetails = this.user.trips.find(trip => trip.id === destination.tripID);
-    let captionHTML = `
+  createDestinationCaption(tripDisplayContainer, destination, destinationSlide, tripDetails) {
+    let caption = destinationSlide.getElementsByTagName('figcaption')[0];
+    if (tripDisplayContainer.className === "destinations-catalog") {
+      return caption.innerHTML = `${destination.destination}`
+    } 
+    caption.innerHTML = `
+        <h3 class="location">${destination.destination}</h3>
 				<h6>Date:</h6>
 				<p>${tripDetails.date}</p>
 				<h6>Duration: </h6>
@@ -160,31 +198,41 @@ class DomUpdates {
 				<p>${tripDetails.travelers}</p>
 			` 
     if (tripDisplayContainer.className === "pending-user-trips") {
-      this.addXtraCaptionDetails4Agency(captionHTML, tripDetails, tripDisplayContainer)
+      this.addCostumerName(caption, tripDetails)
+      this.addAgencyResponseButtons(caption, tripDetails)
     }
-    return captionHTML
-  }
 
-  addXtraCaptionDetails4Agency(caption, tripDetails, tripDisplayContainer) {
-    console.log(caption);
-  }
-
-  createUserYear2DateFinanceMetric(userNode, financeMetric) {
-    let message = this.createFinanceMetricMessage(userNode, financeMetric)
-    userNode.innerHTML = ''
-    userNode.insertAdjacentHTML('afterbegin', 
-      `<h1>${message}</h1>`);
-  }
-
-  createFinanceMetricMessage(userNode, financeMetric) {
-    if (userNode.id === "traveler-Y2D-expenses") {
-      return `You've spent $${financeMetric} on trips this year!`	
-    } 
-
-    if (userNode.id === "agency-Y2D-income") {
-      return `We've generated $${financeMetric} from trips this year!`
+    if (tripDisplayContainer.className === "ongoing-trips-catalog") {
+      this.addCostumerName(caption, tripDetails)
     }
   }
+
+  addCostumerName(caption, tripDetails) {
+    let costumer = this.travelers.find(traveler => traveler.id === tripDetails.userID);
+    caption.insertAdjacentHTML('beforeend', `
+			<h6>Costumer Name:</h6>
+			<p>${costumer.name}<p>
+		`)
+  }
+
+  addAgencyResponseButtons(caption, tripDetails) {
+    let agencyResponseButtons = `
+		<form class="trip-request-response-btns">
+			<button class="approve-pending-trip-btn" name="approveTripBtn" value="${tripDetails.id}"> Approve!</button>
+			<button class="delete-pending-trip-btn" name ="cancelTripBtn" value="${tripDetails.id}">Cancel!</button>
+		</form>
+		`
+    return caption.insertAdjacentHTML('beforeend', agencyResponseButtons);
+  }
+
+  createOngoingTripsCatalog(tripsDisplayContainer) {
+    let destinations = this.user.findOngoingTrips()
+      .map(trip => this.user.findDestinationDetails(trip));
+    this.createDestinationCatalog(tripsDisplayContainer, destinations)
+  }
+
+  // TRAVELER POST REQuEST
+
   displayRequestForm() {
     this.tripRequestForm.classList.toggle('hidden');
     this.createDestinatonOptions();
@@ -215,17 +263,50 @@ class DomUpdates {
       status: 'pending',
       suggestedActivities: []
     }
-
+		
+    const message = `
+			This trip will cost ${this.user.calculateTripCost4Traveler(tripRequest)}
+			You will be charged after your trip is approved!
+		`
     const apiRequest = new ApiFetch();
 		
     apiRequest.makeTripRequest(tripRequest)
-      .then(response => console.log(response))
+      .then(response => alert(message))
       .catch(err => console.log(err));	
 
-    form.reset();
+    this.tripRequestForm.reset();
+  }
+
+  // AGENCY POST REQUEST
+  addAgencyTripRequestResponse() {
+    return 
+  }
+
+  postAgencyDecision(event) {
+    let agentResponse
+    let agentResponseApi = new ApiFetch();
+		
+    if (event.target.name === "approveTripBtn") {
+      agentResponse = {
+        id: parseInt(event.target.value),
+        status: "approved"
+      }
+      agentResponseApi.response2TripRequest(agentResponse)
+        .then(response => console.log(response))
+        .catch(err => console.log(err))
+    }
+
+    if (event.target.name === "cancelTripBtn") {
+      agentResponse = {
+        id: parseInt(event.target.value),
+      }
+      agentResponseApi.cancelTripRequest(agentResponse)
+        .then(response => console.log(response))
+        .catch(err => console.log(err))
+    }
+
   }
 }
 
 export default DomUpdates;
-
 

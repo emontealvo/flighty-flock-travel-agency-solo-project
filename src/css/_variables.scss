@@ -13,7 +13,12 @@ $light-teal: #ABC3C9;
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align;
-};
+}
+
+@mixin addColor($background, $font) {
+	background-color: $background;
+	color: $font;
+}
 
 @mixin aspect-ratio($width, $height) {
   position: relative;

@@ -2,13 +2,12 @@
 @import 'variables';
 @import 'header';
 @import 'loginPopup';
-@import 'carousel';
-
+@import 'tripCatalog';
+@import 'userPage';
 
 
 body {
-  background: $dark-brown;
-  color: $off-white;
+	@include addColor($dark-brown, $off-white);
 }
 
 .hidden {
